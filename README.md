@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# useStateAction example
 
-## Getting Started
+URL: https://react.dev/reference/react/useActionState
 
-First, run the development server:
+**Ex1**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```js
+'use client';
+import { action } from './actions';
+import { useActionState } from 'react';
+
+export default function Home() {
+  const [state, formAction, isPending] = useActionState(action, undefined);
+
+  return (
+    <form action={formAction} className="flex flex-col gap-2">
+      <input type="hidden" name="id" value={1} />
+      <input
+        type="text"
+        name="firstName"
+        style={{ border: '1px solid green' }}
+      />
+      <input
+        type="text"
+        name="lastName"
+        style={{ border: '1px solid green' }}
+      />
+      <button type="submit">{isPending ? 'Submitting' : 'Submit'}</button>
+      {state?.message && (
+        <p className={state.success ? 'text-green-500' : 'text-red-500'}>
+          {state.message}
+        </p>
+      )}
+    </form>
+  );
+}
+//actions.js
+export async function action(prevState: any, formData: FormData) {
+  const firstName = formData.get('firstName') as string;
+  const lastName = formData.get('lastName') as string;
+  const id = formData.get('id') as string;
+
+  if (firstName.length < 3) {
+    return {
+      success: false,
+      message: 'First name must be at leaset 3 characters long',
+    };
+  }
+
+  return {
+    success: true,
+    message: `User ${id} updated to ${firstName}, ${lastName}`,
+  };
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**EX2**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```js
+import { useActionState } from 'react';
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+async function increment(previousState, formData) {
+  return previousState + 1;
+}
 
-## Learn More
+function StatefulForm({}) {
+  const [state, formAction] = useActionState(increment, 0);
+  return (
+    <form>
+      {state}
+      <button formAction={formAction}>Increment</button>
+    </form>
+  );
+}
+```
 
-To learn more about Next.js, take a look at the following resources:
+# Why defaultChecked Works
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- checked - Fully controlled, React forces the value → user cannot change without onChange
+- defaultChecked - Input is uncontrolled → user can change normally, but form still posts value
