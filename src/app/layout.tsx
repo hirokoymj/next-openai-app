@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import './globals.css';
 import LeftNav from './components/LeftNav';
+import { AiFillGithub } from 'react-icons/ai';
 
 export default function RootLayout({
   children,
@@ -12,7 +13,7 @@ export default function RootLayout({
       <body style={{ margin: 0, fontFamily: 'sans-serif' }}>
         <header
           style={{ background: '#1e40af', color: 'white', padding: '1rem' }}>
-          <h1>Next.js (v16) CRUD demo</h1>
+          <h1>Next.js AI &amp; CRUD Application</h1>
         </header>
         <div style={{ display: 'flex', minHeight: '90vh' }}>
           <nav
@@ -20,6 +21,8 @@ export default function RootLayout({
             <ul style={{ listStyle: 'none', padding: 0 }}>
               <LeftNav href="/users" title="Users" />
               <LeftNav href="/todos" title="Todos" />
+              <LeftNav href="/chat" title="AI Chat" />
+              <LeftNav href="/recipe" title="AI Recipe" />
             </ul>
           </nav>
 
@@ -32,8 +35,21 @@ export default function RootLayout({
             color: 'white',
             padding: '1rem',
             textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0.4rem',
           }}>
-          © 2025 Hiroko CRUD App
+          <span>© 2025 Hiroko Yamaji. Built with Next.js and OpenAI.</span>
+          <Link
+            href="https://github.com/hirokoymj/next-openai-app"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open source on GitHub"
+            style={{ color: 'white', display: 'inline-flex' }}>
+            <AiFillGithub size={30} />
+          </Link>
         </footer>
       </body>
     </html>

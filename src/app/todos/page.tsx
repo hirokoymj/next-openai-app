@@ -7,6 +7,8 @@ export default async function TodoListPage() {
   });
   const todos = await res.json();
   console.log('Todos from API:', todos); // ✅ debug
+  console.log(process.env.DB_USER);
+  console.log(process.env.OPENAI_API_KEY);
 
   return (
     <main className="p-6 font-sans">
