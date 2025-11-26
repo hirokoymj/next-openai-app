@@ -38,3 +38,14 @@
 **Live Demo**: https://www.hirokoymj.com/ai-weather
 
 <hr />
+
+## React Query Mutation
+
+https://tanstack.com/query/v5/docs/framework/react/guides/mutations
+
+
+mutation.isError
+
+mutation.error
+
+mutation.error.message
