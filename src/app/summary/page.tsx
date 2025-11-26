@@ -11,25 +11,24 @@ const summaryStyles = [
   { label: 'Bullet List', value: 'bullet' },
 ];
 
-const AISumamryPage = () => {
-  const [prompt, setPrompt] = useState('');
-  const [style, setStyle] = useState('short');
+const AISummaryPage = () => {
+  const [prompt, setPrompt] = useState<string>('');
+  const [style, setStyle] = useState<string>('short');
 
-  const mutation = useMutation({
+  const { mutate, data, isPending, isError } = useMutation({
     mutationFn: async (prompt: string) => {
-      const res = await fetch('/api/summary', {
+      return await fetch('/api/summary', {
         method: 'POST',
         body: JSON.stringify({ prompt, style }),
         headers: { 'Content-Type': 'application/json' },
-      });
-
-      if (!res.ok) {
-        throw new Error('Failed to fetch summary');
-      }
-      return res.json();
+      }).then((response) => response.json());
     },
   });
-  const handleSubmit = (e) => {};
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    mutate(prompt);
+  };
 
   const handleSelectSample = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setPrompt(e.target.value);
@@ -40,7 +39,6 @@ const AISumamryPage = () => {
       <h1 className="text-3xl font-bold text-center mb-10">
         Text Summary Generator
       </h1>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* LEFT SIDE — INPUT */}
         <form
@@ -82,13 +80,12 @@ const AISumamryPage = () => {
 
             <button
               type="submit"
-              //   onClick={() => mutation.mutate(prompt)}
-              disabled={mutation.isPending || !prompt}
+              disabled={isPending || !prompt}
               className={`w-full py-2 rounded text-white font-semibold transition bg-blue-600`}>
-              {mutation.isPending ? 'Generating...' : 'Generate Summary'}
+              {isPending ? 'Generating...' : 'Generate Summary'}
             </button>
 
-            {mutation.isError && (
+            {isError && (
               <p className="text-red-600">
                 Something went wrong. Please try again.
               </p>
@@ -100,10 +97,10 @@ const AISumamryPage = () => {
         <div className="bg-yellow-50 shadow p-6 rounded-lg flex flex-col">
           <h2 className="text-xl font-bold mb-4">AI Output</h2>
 
-          {mutation.isPending ? (
+          {isPending ? (
             <p className="text-gray-500 animate-pulse">Generating summary...</p>
-          ) : mutation.data?.reply ? (
-            <p className="whitespace-pre-line">{mutation.data.reply}</p>
+          ) : data?.reply ? (
+            <p className="whitespace-pre-line">{data.reply}</p>
           ) : (
             <p className="text-gray-400">Your summary will appear here.</p>
           )}
@@ -113,4 +110,8 @@ const AISumamryPage = () => {
   );
 };
 
-export default AISumamryPage;
+function Loading() {
+  return <h2>🌀 Loading...</h2>;
+}
+
+export default AISummaryPage;

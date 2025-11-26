@@ -39,13 +39,9 @@
 
 <hr />
 
-## React Query Mutation
+## TansStack Query API
 
 https://tanstack.com/query/v5/docs/framework/react/guides/mutations
 
-
-mutation.isError
-
-mutation.error
-
-mutation.error.message
+- [useQuery](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery)
+- [useMutation](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation)
