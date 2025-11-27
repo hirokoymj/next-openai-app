@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
-export async function GET(_, { params }: { params: Promise<{ id: string }> }) {
+export async function GET({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const user = await prisma.user.findUnique({ where: { id: Number(id) } });
   return NextResponse.json(user);
@@ -22,10 +22,7 @@ export async function PUT(
   return NextResponse.json(user);
 }
 
-export async function DELETE(
-  _,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function DELETE({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   await prisma.user.delete({ where: { id: Number(id) } });
   return NextResponse.json({ message: 'Deleted' });

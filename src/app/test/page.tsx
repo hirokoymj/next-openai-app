@@ -1,38 +1,31 @@
-import { zodTextFormat } from 'openai/helpers/zod';
-import { z } from 'zod';
-
+'use client';
 import OpenAI from 'openai';
+import { useState } from 'react';
+
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-const CalendarEvent = z.object({
-  name: z.string(),
-  date: z.string(),
-  participants: z.array(z.string()),
-});
-
 export default async function HelloPage() {
-  const response = await client.responses.parse({
-    model: 'gpt-4o-2024-08-06',
-    input: [
-      { role: 'system', content: 'Extract the event information.' },
-      {
-        role: 'user',
-        content: 'Alice and Bob are going to a science fair tomorrow.',
-      },
-    ],
-    text: {
-      format: zodTextFormat(CalendarEvent, 'event'),
-    },
+  const result = await client.images.generate({
+    model: 'dall-e-3',
+    prompt: 'a white siamese cat',
+    size: '1024x1024',
   });
 
-  const event = response.output_parsed;
-  console.log(event);
+  if (result.data && result.data.length > 0) {
+    const url = result.data[0].url;
+    console.log(url);
+  } else {
+    console.error('No image URL found in the response.');
+  }
 
   return (
     <div>
       <h1>Hello from Next.js!</h1>
+      {result.data && result.data.length > 0 && (
+        <img src={result.data[0].url} width="300" height="auto" />
+      )}
     </div>
   );
 }

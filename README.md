@@ -3,7 +3,8 @@
 - **Users** (CRUD operations demo with a real database)
 - **Todos** (CRUD operations demo with a real database)
 - **AI Chat** (Chat demo using OpenAI)
-- **AI Recipe** (Recipe generator using OpenAI)
+- **AI Recipe** (Recipe generator using Next.js, OpenAI and TanStackQuery)
+- **AI Text summarizer** - OpenAI (GPT 5.0), Next.js, TanStackQuery v5,
 
 <hr />
 
@@ -13,12 +14,14 @@
 | ------------------ | --------------------------------------------------------------------------------------------------- |
 | api key creation   | [OpenAI Platform](https://platform.openai.com/api-keys)                                             |
 | Model pricing      | [link](https://openai.com/api/pricing/)                                                             |
+| Models             | [link](https://platform.openai.com/docs/models)                                                     |
 | Quickstart         | [link](https://platform.openai.com/docs/quickstart)                                                 |
 | Text generation    | [link](https://platform.openai.com/docs/guides/text)                                                |
 | Image generation   | [link](https://platform.openai.com/docs/guides/image-generation?image-generation-model=gpt-image-1) |
 | Structured output  | [link](https://platform.openai.com/docs/guides/structured-outputs)                                  |
 | Function calling   | [link](https://platform.openai.com/docs/guides/function-calling)                                    |
 | Prompt engineering | [link](https://platform.openai.com/docs/guides/image-generation?image-generation-model=gpt-image-1) |
+| Billing            | [link](https://platform.openai.com/settings/organization/billing/overview)                          |
 
 <hr />
 
@@ -34,6 +37,7 @@
 | Structured output  | [link](https://ai.google.dev/gemini-api/docs/structured-output?example=recipe) |
 | Function calling   | [link](https://ai.google.dev/gemini-api/docs/function-calling?example=meeting) |
 | Prompt engineering | [link](https://ai.google.dev/gemini-api/docs/prompting-strategies)             |
+| Billing            | [link](https://aistudio.google.com/usage?timeRange=last-28-days)               |
 
 **Live Demo**: https://www.hirokoymj.com/ai-weather
 
