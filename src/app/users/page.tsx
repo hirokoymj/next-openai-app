@@ -3,8 +3,6 @@ import UserListClient from './components/UserListClient';
 import { prisma } from '../../lib/prismaClient';
 
 export default async function UserListPage() {
-  //   const res = await fetch('http://localhost:3000/api/users');
-  // 	const users = await res.json();
   const users = await prisma.user.findMany(); // direct DB query
 
   return (
