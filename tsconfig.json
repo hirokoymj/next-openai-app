@@ -18,8 +18,11 @@
         "name": "next"
       }
     ],
+    "ignoreDeprecations": "6.0",
+    "baseUrl": "src",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["*"], // Required for Next.js
+      "@/types/*": ["types/*"]
     }
   },
   "include": [

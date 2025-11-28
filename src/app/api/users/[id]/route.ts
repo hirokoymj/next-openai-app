@@ -1,50 +1,81 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { supabase } from '../../../../lib/supabaseClient';
 
 export async function GET(
-  request: Request,
+  req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const user = await prisma.user.findUnique({
-    where: { id: Number(id) },
-  });
-  return Response.json(user);
+
+  const { data, error } = await supabase
+    .from('users')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error) {
+    console.error('GET /users/:id error:', error);
+    return new Response(JSON.stringify({ error: 'User not found' }), {
+      status: 404,
+    });
+  }
+
+  return new Response(JSON.stringify(data), { status: 200 });
 }
 
 export async function PUT(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  const { id } = await params;
-  const body = await request.json();
-  const user = await prisma.user.update({
-    where: { id: Number(id) },
-    data: body,
-  });
-  return Response.json(user);
-}
-
-export async function DELETE(
-  request: Request,
+  req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = await params; // must await
-    console.log('Deleting user with ID:', id);
+    const { id } = await params;
+    const body = await req.json();
 
-    const user = await prisma.user.delete({
-      where: { id: Number(id) },
+    const { firstName, lastName, gender, email, city } = body;
+
+    const { data, error } = await supabase
+      .from('users')
+      .update({ firstName, lastName, gender, email, city })
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('PUT /users/:id error:', error);
+      return new Response(JSON.stringify({ error: 'Failed to update user' }), {
+        status: 500,
+      });
+    }
+
+    return new Response(JSON.stringify(data), { status: 200 });
+  } catch (err) {
+    console.error('PUT /users/:id exception:', err);
+    return new Response(JSON.stringify({ error: 'Invalid JSON' }), {
+      status: 400,
     });
-
-    return Response.json({ message: 'Deleted', user });
-  } catch (error: any) {
-    console.error('DELETE error:', error);
-
-    return Response.json(
-      { error: 'Failed to delete user', details: error.message },
-      { status: 500 }
-    );
   }
+}
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params; // ✅ unwrap the promise
+  const numericId = Number(id);
+
+  if (isNaN(numericId)) {
+    return new Response(JSON.stringify({ error: 'Invalid user ID' }), {
+      status: 400,
+    });
+  }
+
+  const { error } = await supabase.from('users').delete().eq('id', numericId);
+
+  if (error) {
+    console.error('Supabase DELETE error:', error);
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+    });
+  }
+
+  return new Response(JSON.stringify({ success: true }), { status: 200 });
 }

@@ -1,32 +1,58 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { NewUser } from '@/types/user';
+import { validateField } from '@/utils/formValidation';
 
 export default function NewUserPage() {
   const router = useRouter();
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [gender, setGender] = useState('');
   const [email, setEmail] = useState('');
   const [city, setCity] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setIsSubmitting(true);
+  const [errors, setErrors] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    gender: '',
+    city: '',
+  });
 
-    try {
+  const { mutate, data, isPending, isError } = useMutation({
+    mutationFn: async (user: NewUser) => {
       await fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ firstName, lastName, gender, email, city }),
       });
+    },
+    onSuccess: () => {
       router.push('/users');
-    } catch (error) {
-      console.error('Error creating user:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
+    },
+    onError: (error) => {
+      console.error('Deletion failed:', error);
+    },
+  });
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const newErrors = {
+      firstName: validateField('First Name', firstName),
+      lastName: validateField('Last Name', lastName),
+      email: validateField('Email', email),
+      gender: validateField('Gender', gender),
+      city: validateField('City', city),
+    };
+
+    setErrors(newErrors);
+
+    // Prevent submit if validation fails
+    if (Object.values(newErrors).some((msg) => msg !== '')) return;
+    mutate({ firstName, lastName, gender, email, city });
   }
 
   return (
@@ -42,10 +68,18 @@ export default function NewUserPage() {
             type="text"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
+            onBlur={() =>
+              setErrors((prev) => ({
+                ...prev,
+                firstName: validateField('First Name', firstName),
+              }))
+            }
             placeholder="First Name"
-            required
             className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+          {errors.firstName && (
+            <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>
+          )}
         </div>
 
         {/* Last Name */}
@@ -57,10 +91,18 @@ export default function NewUserPage() {
             type="text"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
+            onBlur={() =>
+              setErrors((prev) => ({
+                ...prev,
+                lastName: validateField('Last Name', lastName),
+              }))
+            }
             placeholder="Last Name"
-            required
             className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+          {errors.lastName && (
+            <p className="text-red-500 text-sm">{errors.lastName}</p>
+          )}
         </div>
 
         {/* Email */}
@@ -70,10 +112,18 @@ export default function NewUserPage() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            onBlur={() =>
+              setErrors((prev) => ({
+                ...prev,
+                email: validateField('Email', email),
+              }))
+            }
             placeholder="Email"
-            required
             className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+          {errors.email && (
+            <p className="text-red-500 text-sm">{errors.email}</p>
+          )}
         </div>
 
         {/* Gender */}
@@ -86,8 +136,13 @@ export default function NewUserPage() {
               value="male"
               checked={gender === 'male'}
               onChange={(e) => setGender(e.target.value)}
+              onBlur={() =>
+                setErrors((prev) => ({
+                  ...prev,
+                  gender: validateField('Gender', gender),
+                }))
+              }
               className="w-4 h-4 text-blue-600"
-              required
             />
             <span>Male</span>
           </label>
@@ -102,6 +157,9 @@ export default function NewUserPage() {
             />
             <span>Female</span>
           </label>
+          {errors.gender && (
+            <p className="text-red-500 text-sm">{errors.gender}</p>
+          )}
         </div>
 
         {/* City */}
@@ -111,22 +169,29 @@ export default function NewUserPage() {
             type="text"
             value={city}
             onChange={(e) => setCity(e.target.value)}
+            onBlur={() =>
+              setErrors((prev) => ({
+                ...prev,
+                city: validateField('City', city),
+              }))
+            }
             placeholder="City"
             className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+          {errors.city && <p className="text-red-500 text-sm">{errors.city}</p>}
         </div>
 
         {/* Buttons */}
         <div className="flex items-center space-x-3">
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isPending}
             className={`px-4 py-2 rounded text-white ${
-              isSubmitting
+              isPending
                 ? 'bg-gray-400 cursor-not-allowed'
                 : 'bg-blue-600 hover:bg-blue-700'
             } transition`}>
-            {isSubmitting ? 'Saving...' : 'Save'}
+            {isPending ? 'Saving...' : 'Save'}
           </button>
           <button
             type="button"

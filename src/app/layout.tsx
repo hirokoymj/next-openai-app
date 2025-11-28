@@ -20,7 +20,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <nav className="w-48 bg-gray-100 p-4">
               <ul className="list-none p-0">
                 <LeftNav href="/users" title="Users" />
-                <LeftNav href="/todos" title="Todos" />
                 <LeftNav href="/chat" title="AI Chat" />
                 <LeftNav href="/recipe" title="AI Recipe" />
                 <LeftNav href="/summary" title="AI Summary" />

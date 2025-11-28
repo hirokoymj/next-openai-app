@@ -49,3 +49,26 @@ https://tanstack.com/query/v5/docs/framework/react/guides/mutations
 
 - [useQuery](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery)
 - [useMutation](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation)
+
+## Database - supabase (Free version)
+
+**Official site**
+
+- https://supabase.com/
+
+**View a database region**
+
+- [Project settings -> Infrastructure](https://supabase.com/dashboard/project/bksfkeopbvvuwwlleasu/settings/infrastructure)
+
+**API keys**
+
+- [Settings -> API Keys -> Legasy anon, service_role keys](https://supabase.com/dashboard/project/bksfkeopbvvuwwlleasu/settings/api-keys/legacy)
+
+**Supabase JavaScript Reference**
+
+- https://supabase.com/docs/reference/javascript/installing
+- https://supabase.com/docs/reference/javascript/select
+
+## Deploy - Vercel
+
+- https://vercel.com/
