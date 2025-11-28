@@ -8,9 +8,6 @@ export default function HomePage() {
         <li>
           <Link href="/users">👤 Users</Link>
         </li>
-        <li>
-          <Link href="/todos">📝 Todos</Link>
-        </li>
       </ul>
     </main>
   );
