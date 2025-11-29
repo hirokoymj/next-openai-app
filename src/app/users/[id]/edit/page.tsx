@@ -2,7 +2,7 @@
 import { use, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { User } from '@/recipe.ts/user';
+import { User } from '@/types/user';
 import { validateField } from '@/utils/formValidation';
 
 type UpdatedUser = Omit<User, 'id'>;
