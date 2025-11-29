@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import UserList from './components/UserList';
-import { User } from '@/types/user';
+import { User } from '@/recipe.ts/user';
 
 export default async function UserListPage() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users`, {

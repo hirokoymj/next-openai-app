@@ -1,30 +1,36 @@
 'use client';
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
+import { validateField } from '@/utils/formValidation';
+import { Recipe, RecipeResponse } from '@/types/recipe';
+import { AiModelHeader } from '@/components/AiModelHeader';
 
-interface Recipe {
-  title: string;
-  ingredients: string[];
-  steps: string[];
-}
-interface RecipeResponse {
-  recipe: Recipe;
-}
+const headerInfo = {
+  title: 'AI: Recipe generator',
+  provider: 'OpenAI',
+  model: 'GPT-5 nano',
+  repoUrl:
+    'https://github.com/hirokoymj/next-openai-app/blob/main/src/app/recipe/page.tsx',
+  referenceUrl: 'https://platform.openai.com/docs/guides/structured-outputs',
+  referenceLabel: 'Structured output',
+  stack: ['Next.js', 'OpenAI', 'TansStack Query'],
+};
 
 export default function RecipeGeneratorPage() {
-  const [prompt, setPrompt] = useState<string>('');
+  const [recipe, setRecipe] = useState<string>('');
+  const [errors, setErrors] = useState({ recipe: '' });
 
   const { mutate, data, isPending, isError } = useMutation({
-    mutationFn: (prompt: string) => generateRecipe(prompt),
+    mutationFn: (recipe: string) => generateRecipe(recipe),
     onError: (error) => {
       console.log(error);
     },
   });
 
-  async function generateRecipe(prompt: string): Promise<RecipeResponse> {
+  async function generateRecipe(recipe: string): Promise<RecipeResponse> {
     const response = await fetch('/api/recipe', {
       method: 'POST',
-      body: JSON.stringify({ prompt }),
+      body: JSON.stringify({ recipe }),
       headers: { 'Content-Type': 'application/json' },
     });
     return response.json();
@@ -32,7 +38,13 @@ export default function RecipeGeneratorPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutate(prompt);
+
+    const newErrors = {
+      recipe: validateField('Recipe', recipe),
+    };
+    setErrors(newErrors);
+    if (Object.values(newErrors).some((msg) => msg !== '')) return;
+    mutate(recipe);
   };
 
   const renderRecipe = (recipe: Recipe) => (
@@ -56,7 +68,7 @@ export default function RecipeGeneratorPage() {
 
   return (
     <div className="max-w-5xl mx-auto mt-12 px-4">
-      <h1 className="text-3xl font-bold text-center mb-10">Recipe Generator</h1>
+      <AiModelHeader headerInfo={headerInfo} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* LEFT SIDE — USER INPUT */}
@@ -65,14 +77,23 @@ export default function RecipeGeneratorPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block font-medium mb-1">Recipe Prompt</label>
+              <label className="block font-medium mb-1">Recipe</label>
               <input
                 type="text"
                 placeholder="e.g. Chocolate chip cookies"
                 className="w-full p-2 border border-gray-300 rounded focus:outline-blue-500"
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
+                value={recipe}
+                onChange={(e) => setRecipe(e.target.value)}
+                onBlur={() => {
+                  setErrors((prev) => ({
+                    ...prev,
+                    recipe: validateField('Recipe', recipe),
+                  }));
+                }}
               />
+              {errors.recipe && (
+                <p className="text-red-500 text-sm mt-1">{errors.recipe}</p>
+              )}
             </div>
 
             <button
@@ -93,7 +114,7 @@ export default function RecipeGeneratorPage() {
         </div>
 
         {/* RIGHT SIDE — GENERATED OUTPUT */}
-        <div className="bg-yellow-50 shadow p-6 rounded-lg">
+        <div className="bg-green-50 shadow p-6 rounded-lg">
           <h2 className="text-xl font-bold mb-4">Generated Output</h2>
 
           {!data && (
@@ -104,6 +125,29 @@ export default function RecipeGeneratorPage() {
 
           {data && renderRecipe(data.recipe)}
         </div>
+      </div>
+      {/* Example Prompt Table */}
+      <div className="mt-10 bg-white shadow rounded-lg overflow-hidden">
+        <h2 className="text-xl font-bold px-4 py-3 bg-gray-100 border-b">
+          Example Prompts
+        </h2>
+
+        <table className="w-full text-left">
+          <tbody>
+            {[
+              'Chocolate Chip Cookies',
+              'English Muffins',
+              'Spaghetti Carbonara',
+            ].map((item, idx) => (
+              <tr
+                key={idx}
+                onClick={() => setRecipe(item)}
+                className="cursor-pointer hover:bg-blue-50 transition">
+                <td className="px-4 py-3 border-b text-gray-700">{item}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
