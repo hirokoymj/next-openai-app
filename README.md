@@ -1,5 +1,7 @@
 # Next.js (v6) + OpenAI application
 
+**Live URL:** https://next-openai-app-ruby.vercel.app/
+
 - **Users** (CRUD operations demo with a real database)
 - **Todos** (CRUD operations demo with a real database)
 - **AI Chat** (Chat demo using OpenAI)
