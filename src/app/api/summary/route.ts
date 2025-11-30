@@ -23,7 +23,7 @@ export async function POST(req: Request) {
         styleInstruction = 'Summarize the text in one short paragraph.';
     }
     const response = await openai.responses.create({
-      model: 'gpt-5',
+      model: 'gpt-5-nano',
       reasoning: { effort: 'low' },
       instructions: `${styleInstruction}\n\nText: ${prompt}`,
       input: prompt,

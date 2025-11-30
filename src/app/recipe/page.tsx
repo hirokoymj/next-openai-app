@@ -2,8 +2,12 @@
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { validateField } from '@/utils/formValidation';
-import { Recipe, RecipeResponse } from '@/types/recipe';
+import { Recipe } from '@/types/recipe';
 import { AiModelHeader } from '@/components/AiModelHeader';
+
+interface RecipeResponse {
+  recipe: Recipe;
+}
 
 const headerInfo = {
   title: 'AI: Recipe generator',

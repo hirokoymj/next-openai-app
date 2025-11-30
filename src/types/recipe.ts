@@ -3,7 +3,3 @@ export interface Recipe {
   ingredients: string[];
   steps: string[];
 }
-
-export interface RecipeResponse {
-  recipe: Recipe;
-}
