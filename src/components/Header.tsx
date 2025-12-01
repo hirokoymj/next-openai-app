@@ -6,7 +6,7 @@ export default function Header() {
     <header className="bg-blue-900 text-white p-4">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold">
-          Next.js 16 + OpenAI + TanStack Query Demo
+          Next.js 16 + OpenAI + TanStack Query demo
         </h1>
 
         <Link

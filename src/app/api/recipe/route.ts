@@ -10,10 +10,10 @@ const RecipeSchema = z.object({
 });
 
 export async function POST(req: Request) {
-  const { prompt } = await req.json();
+  const { recipe } = await req.json();
 
-  if (!prompt || prompt.trim() === '') {
-    return NextResponse.json({ error: 'Prompt is required.' }, { status: 400 });
+  if (!recipe || recipe.trim() === '') {
+    return NextResponse.json({ error: 'Recipe is required.' }, { status: 400 });
   }
 
   try {
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
         },
         {
           role: 'user',
-          content: `Generate a recipe for: ${prompt}. Return only title, ingredients[], and steps[].`,
+          content: `Generate a recipe for: ${recipe}. Return only title, ingredients[], and steps[].`,
         },
       ],
       text: {
@@ -35,8 +35,8 @@ export async function POST(req: Request) {
       },
     });
 
-    const recipe = response.output_parsed;
-    return NextResponse.json({ recipe });
+    const output = response.output_parsed;
+    return NextResponse.json({ output });
   } catch (err: any) {
     console.error('Schema parse error:', err);
 

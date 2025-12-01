@@ -74,4 +74,3 @@ https://tanstack.com/query/v5/docs/framework/react/guides/mutations
 ## Deploy - Vercel
 
 - https://vercel.com/
-  aaa

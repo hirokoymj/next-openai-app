@@ -4,9 +4,10 @@ import { useMutation } from '@tanstack/react-query';
 import { validateField } from '@/utils/formValidation';
 import { Recipe } from '@/types/recipe';
 import { AiModelHeader } from '@/components/AiModelHeader';
+import { Errors } from '@/types/recipe';
 
 interface RecipeResponse {
-  recipe: Recipe;
+  output: Recipe;
 }
 
 const headerInfo = {
@@ -14,7 +15,7 @@ const headerInfo = {
   provider: 'OpenAI',
   model: 'GPT-5 nano',
   repoUrl:
-    'https://github.com/hirokoymj/next-openai-app/blob/main/src/app/recipe/page.tsx',
+    'https://github.com/hirokoymj/next-openai-app/blob/main/src/app/api/recipe/route.ts',
   referenceUrl: 'https://platform.openai.com/docs/guides/structured-outputs',
   referenceLabel: 'Structured output',
   stack: ['Next.js', 'OpenAI', 'TansStack Query'],
@@ -22,7 +23,7 @@ const headerInfo = {
 
 export default function RecipeGeneratorPage() {
   const [recipe, setRecipe] = useState<string>('');
-  const [errors, setErrors] = useState({ recipe: '' });
+  const [errors, setErrors] = useState<Errors<'recipe'>>({ recipe: '' });
 
   const { mutate, data, isPending, isError } = useMutation({
     mutationFn: (recipe: string) => generateRecipe(recipe),
@@ -48,27 +49,31 @@ export default function RecipeGeneratorPage() {
     };
     setErrors(newErrors);
     if (Object.values(newErrors).some((msg) => msg !== '')) return;
+
     mutate(recipe);
   };
 
-  const renderRecipe = (recipe: Recipe) => (
-    <div className="mt-6 p-6 bg-white shadow rounded-lg">
-      <h2 className="text-2xl font-semibold mb-4">{recipe.title}</h2>
-      <h3 className="text-lg font-semibold mt-4">Ingredients</h3>
-      <ul className="list-disc ml-6 mt-2">
-        {recipe.ingredients.map((item, idx) => (
-          <li key={idx}>{item}</li>
-        ))}
-      </ul>
+  const renderRecipe = (data: RecipeResponse) => {
+    const { title, ingredients, steps } = data.output;
+    return (
+      <div className="mt-6 p-6 bg-white shadow rounded-lg">
+        <h2 className="text-2xl font-semibold mb-4">{title}</h2>
+        <h3 className="text-lg font-semibold mt-4">Ingredients</h3>
+        <ul className="list-disc ml-6 mt-2">
+          {ingredients.map((item, idx) => (
+            <li key={idx}>{item}</li>
+          ))}
+        </ul>
 
-      <h3 className="text-lg font-semibold mt-4">Steps</h3>
-      <ol className="list-decimal ml-6 mt-2 space-y-1">
-        {recipe.steps.map((step, idx) => (
-          <li key={idx}>{step}</li>
-        ))}
-      </ol>
-    </div>
-  );
+        <h3 className="text-lg font-semibold mt-4">Steps</h3>
+        <ol className="list-decimal ml-6 mt-2 space-y-1">
+          {steps.map((step, idx) => (
+            <li key={idx}>{step}</li>
+          ))}
+        </ol>
+      </div>
+    );
+  };
 
   return (
     <div className="max-w-5xl mx-auto mt-12 px-4">
@@ -127,7 +132,7 @@ export default function RecipeGeneratorPage() {
             </p>
           )}
 
-          {data && renderRecipe(data.recipe)}
+          {data && renderRecipe(data)}
         </div>
       </div>
       {/* Example Prompt Table */}
@@ -145,7 +150,10 @@ export default function RecipeGeneratorPage() {
             ].map((item, idx) => (
               <tr
                 key={idx}
-                onClick={() => setRecipe(item)}
+                onClick={() => {
+                  setRecipe(item);
+                  setErrors({ recipe: '' });
+                }}
                 className="cursor-pointer hover:bg-blue-50 transition">
                 <td className="px-4 py-3 border-b text-gray-700">{item}</td>
               </tr>
