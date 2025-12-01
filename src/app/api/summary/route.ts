@@ -4,7 +4,7 @@ import { openai } from '@/lib/openai';
 export async function POST(req: Request) {
   try {
     const { prompt, style } = await req.json();
-    // Convert style to human-readable instructions
+
     let styleInstruction = '';
     switch (style) {
       case 'short':

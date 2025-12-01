@@ -2,8 +2,8 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { NewUser } from '@/types/user';
 import { validateField } from '@/utils/formValidation';
+import { NewUser } from '@/types';
 
 export default function NewUserPage() {
   const router = useRouter();

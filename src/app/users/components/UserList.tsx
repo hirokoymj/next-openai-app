@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { User } from '@/types/user';
+import { User } from '@/types';
 
 export default function UserList({ users }: { users: User[] }) {
   const router = useRouter();

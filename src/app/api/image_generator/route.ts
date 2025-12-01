@@ -12,14 +12,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Call DALL·E to generate the image
     const result = await openai.images.generate({
       model: 'dall-e-2', // or 'dall-e-3'
       prompt,
       size: '512x512', // smaller size for cheaper/faster generation
     });
 
-    // Type-safe access to the first image URL
     const imageUrl = result.data?.[0]?.url;
 
     if (!imageUrl) {
@@ -29,7 +27,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Return the image URL to the frontend
     return NextResponse.json({ imageUrl });
   } catch (err: any) {
     console.error('Error generating image:', err);

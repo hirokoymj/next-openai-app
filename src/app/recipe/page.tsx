@@ -2,9 +2,8 @@
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { validateField } from '@/utils/formValidation';
-import { Recipe } from '@/types/recipe';
+import { Recipe, Errors } from '@/types';
 import { AiModelHeader } from '@/components/AiModelHeader';
-import { Errors } from '@/types/recipe';
 
 interface RecipeResponse {
   output: Recipe;

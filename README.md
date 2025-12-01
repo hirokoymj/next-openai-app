@@ -1,76 +1,94 @@
-# Next.js (v6) + OpenAI application
+# Next.js + OpenAI + TanStack Query app
 
 **Live URL:** https://next-openai-app-ruby.vercel.app/
 
-- **Users** (CRUD operations demo with a real database)
-- **Todos** (CRUD operations demo with a real database)
-- **AI Chat** (Chat demo using OpenAI)
-- **AI Recipe** (Recipe generator using Next.js, OpenAI and TanStackQuery)
-- **AI Text summarizer** - OpenAI (GPT 5.0), Next.js, TanStackQuery v5,
+## 🚀 Overview
+
+A collection of small AI-driven applications built with Next.js 16, OpenAI GPT-5.0, and TanStack Query. This project demonstrates modern frontend practices, API routes, data fetching, server-side actions, and AI integration
+
+## Tech Stack
+
+- **Next.js 16**
+- **OpenAI GPT-5.0 models**
+- **TanStack Query v5**
+- **Supabase database**
+- **Vercel** (production deployment)
+- **TypeScript**
+
+## Applications Included
+
+### Users App
+
+- Full CRUD
+- REST API using Next.js Route Handlers
+- TanStack Query (fetching, caching, optimistic updates)
+
+![Users App](./public/screenshots/users.png)
 
 <hr />
 
-## OpenAI (GPT 5.0)
+### Recipe Generator
 
-| Core Conecepts     | Documentation                                                                                       |
-| ------------------ | --------------------------------------------------------------------------------------------------- |
-| api key creation   | [OpenAI Platform](https://platform.openai.com/api-keys)                                             |
-| Model pricing      | [link](https://openai.com/api/pricing/)                                                             |
-| Models             | [link](https://platform.openai.com/docs/models)                                                     |
-| Quickstart         | [link](https://platform.openai.com/docs/quickstart)                                                 |
-| Text generation    | [link](https://platform.openai.com/docs/guides/text)                                                |
-| Image generation   | [link](https://platform.openai.com/docs/guides/image-generation?image-generation-model=gpt-image-1) |
-| Structured output  | [link](https://platform.openai.com/docs/guides/structured-outputs)                                  |
-| Function calling   | [link](https://platform.openai.com/docs/guides/function-calling)                                    |
-| Prompt engineering | [link](https://platform.openai.com/docs/guides/image-generation?image-generation-model=gpt-image-1) |
-| Billing            | [link](https://platform.openai.com/settings/organization/billing/overview)                          |
+- AI-generated recipes using GPT-5.0
+- Using Structured output
+- TanStack Query for mutation handling.
+
+![AI Recipe Generator](./public/screenshots/ai-gen-recipe.png)
 
 <hr />
 
-## Google Gemini (Gemini 2.5)
+### Sumamry Generator
 
-| Core Conecepts     | Documentation                                                                  |
-| ------------------ | ------------------------------------------------------------------------------ |
-| api key creation   | [Google AI studio](https://aistudio.google.com/api-keys)                       |
-| Model pricing      | [lnk](https://ai.google.dev/gemini-api/docs/models#gemini-2.5-pro)             |
-| Quickstart         | [link](https://ai.google.dev/gemini-api/docs/quickstart)                       |
-| Text generation    | [link](https://ai.google.dev/gemini-api/docs/text-generation)                  |
-| Image generation   | [link](https://ai.google.dev/gemini-api/docs/image-generation?batch=file)      |
-| Structured output  | [link](https://ai.google.dev/gemini-api/docs/structured-output?example=recipe) |
-| Function calling   | [link](https://ai.google.dev/gemini-api/docs/function-calling?example=meeting) |
-| Prompt engineering | [link](https://ai.google.dev/gemini-api/docs/prompting-strategies)             |
-| Billing            | [link](https://aistudio.google.com/usage?timeRange=last-28-days)               |
+- Summarizes the text into one short paragraph (less than 300 characters). Three styles are available: **Short**, **Medium**, and **Bullet**.
+- Uses TanStack Query for mutation handling
 
-**Live Demo**: https://www.hirokoymj.com/ai-weather
+![AI Summary Generator](./public/screenshots/ai-gen-summary.png)
+
+### Image Generator
+
+- Using OpenAI cheapest AI model (DALL·E)
+- TanStack Query for mutation handling.
+
+![AI Image Generator](./public/screenshots/ai-gen-img.png)
 
 <hr />
 
-## TansStack Query API
+## Folder Structure
 
-https://tanstack.com/query/v5/docs/framework/react/guides/mutations
-
-- [useQuery](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery)
-- [useMutation](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation)
-
-## Database - supabase (Free version)
-
-**Official site**
-
-- https://supabase.com/
-
-**View a database region**
-
-- [Project settings -> Infrastructure](https://supabase.com/dashboard/project/bksfkeopbvvuwwlleasu/settings/infrastructure)
-
-**API keys**
-
-- [Settings -> API Keys -> Legasy anon, service_role keys](https://supabase.com/dashboard/project/bksfkeopbvvuwwlleasu/settings/api-keys/legacy)
-
-**Supabase JavaScript Reference**
-
-- https://supabase.com/docs/reference/javascript/installing
-- https://supabase.com/docs/reference/javascript/select
-
-## Deploy - Vercel
-
-- https://vercel.com/
+```css
+src/
+ ├── app/
+ │    ├── api/
+ │    │    ├── users/
+ │    │    │    └── route.ts
+ │    │    └── image_generator/
+ │    │    │     └── route.ts
+ │    │    └── recipe/
+ │    │    │     └── route.ts
+ │    │    └── summary/
+ │    │         └── route.ts
+ │    ├── recipe/
+ │    │    └── page.tsx
+ │    ├── summary/
+ │    │    └── page.tsx
+ │    ├── image_generator/
+ │    │    └── page.tsx
+ │    ├── users/
+ │    │    └── page.tsx
+ │    └── page.tsx  ← redirects to recipe
+ │
+ ├── components/
+ │    ├── Header.tsx
+ │    ├── Footer.tsx
+ │    ├── LeftNav.tsx
+ │    └── ExampleTable.tsx
+ │
+ ├── utils/
+ │    └── formValidation.ts
+ │
+ ├── types/
+ │    └── index.ts
+ │
+ └── lib/
+      └── openai.ts
+```

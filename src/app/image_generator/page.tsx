@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { validateField } from '@/utils/formValidation';
 import { AiModelHeader } from '@/components/AiModelHeader';
 import { ExampleTable } from '@/components/ExampleTable';
-import { Errors } from '@/types/recipe';
+import { Errors } from '@/types';
 
 interface ImageResponse {
   imageUrl: string;

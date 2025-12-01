@@ -2,10 +2,8 @@
 import { use, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { User } from '@/types/user';
 import { validateField } from '@/utils/formValidation';
-
-type UpdatedUser = Omit<User, 'id'>;
+import { User, UpdatedUser } from '@/types';
 
 const fetchUser = async (id: string): Promise<User> => {
   const res = await fetch(`/api/users/${id}`);
