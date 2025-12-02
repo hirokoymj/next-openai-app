@@ -57,6 +57,10 @@
 - https://supabase.com/docs/reference/javascript/installing
 - https://supabase.com/docs/reference/javascript/select
 
+```js
+const users = await db.user.getAll();
+```
+
 ## Deploy - Vercel
 
 - https://vercel.com/

@@ -91,4 +91,5 @@ src/
  │
  └── lib/
       └── openai.ts
+      └── supabaseClient.ts
 ```

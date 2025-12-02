@@ -52,5 +52,63 @@ export const db = {
       if (error) throw error;
       return data;
     },
+    async getPaginated(
+      page: number,
+      limit: number,
+      sortBy: string,
+      sortOrder: 'asc' | 'desc',
+      search: string
+    ) {
+      const from = (page - 1) * limit;
+      const to = from + limit - 1;
+
+      let query = supabase
+        .from('users')
+        .select('*', { count: 'exact' })
+        .order(sortBy, { ascending: sortOrder === 'asc' });
+
+      // Apply search (firstName OR lastName)
+      if (search) {
+        query = query.or(
+          `firstName.ilike.%${search}%,lastName.ilike.%${search}%`
+        );
+      }
+
+      const { data, error, count } = await query.range(from, to);
+
+      if (error) throw error;
+
+      return {
+        data,
+        total: count ?? 0,
+      };
+    },
   },
 };
+
+// async getPaginated(
+//   page: number,
+//   limit: number,
+//   sortBy: string,
+//   sortOrder: 'asc' | 'desc',
+//   search: string
+// ) {
+//   const from = (page - 1) * limit;
+//   const to = from + limit - 1;
+
+//   const validColumns = ['firstName', 'lastName', 'email', 'city', 'id'];
+//   const column = validColumns.includes(sortBy) ? sortBy : 'id';
+
+//   const { data, error, count } = await supabase
+//     .from('users')
+//     .select('*', { count: 'exact' })
+//     .order(column, { ascending: sortOrder === 'asc' })
+//     .range(from, to);
+
+//   if (error) throw error;
+
+//   return {
+//     data,
+//     total: count ?? 0,
+//   };
+// },

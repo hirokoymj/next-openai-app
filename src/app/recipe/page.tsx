@@ -75,7 +75,7 @@ export default function RecipeGeneratorPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto mt-12 px-4">
+    <div className="max-w-5xl mx-auto mt-6 px-4">
       <AiModelHeader headerInfo={headerInfo} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

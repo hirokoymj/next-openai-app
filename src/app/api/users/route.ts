@@ -1,40 +1,39 @@
-import { supabase } from '@/lib/supabaseClient';
+import { NextResponse } from 'next/server';
+import { db } from '@/lib/db';
 
-export async function GET() {
-  const { data, error } = await supabase.from('users').select('*');
-  if (error) {
-    console.error('Error fetching users:', error);
-    return new Response(JSON.stringify({ error: 'Failed to fetch users' }), {
-      status: 500,
-    });
-  }
-  return new Response(JSON.stringify(data));
+//GET /api/users?page&limit
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+
+  const page = Number(searchParams.get('page')) || 1;
+  const limit = Number(searchParams.get('limit')) || 10;
+
+  const sortBy = searchParams.get('sortBy') || 'id';
+  const sortOrder = (searchParams.get('sortOrder') as 'asc' | 'desc') || 'asc';
+  const search = searchParams.get('search') || '';
+
+  const { data, total } = await db.user.getPaginated(
+    page,
+    limit,
+    sortBy,
+    sortOrder,
+    search
+  );
+
+  return NextResponse.json({
+    users: data,
+    total,
+    page,
+    limit,
+    sortBy,
+    sortOrder,
+    search,
+    totalPages: Math.ceil(total / limit),
+  });
 }
 
 export async function POST(req: Request) {
-  try {
-    const body = await req.json();
-
-    const { firstName, lastName, gender, email, city } = body;
-
-    const { data, error } = await supabase
-      .from('users')
-      .insert([{ firstName, lastName, gender, email, city }])
-      .select()
-      .single();
-
-    if (error) {
-      console.error('POST /users error:', error);
-      return new Response(JSON.stringify({ error: 'Failed to create user' }), {
-        status: 500,
-      });
-    }
-
-    return new Response(JSON.stringify(data), { status: 201 });
-  } catch (err) {
-    console.error('POST /users exception:', err);
-    return new Response(JSON.stringify({ error: 'Invalid JSON' }), {
-      status: 400,
-    });
-  }
+  const body = await req.json();
+  const newUser = await db.user.create(body);
+  return NextResponse.json(newUser);
 }
