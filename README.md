@@ -93,3 +93,7 @@ src/
       └── openai.ts
       └── supabaseClient.ts
 ```
+
+### References:
+
+- [Supabase dashboard](https://supabase.com/dashboard/project/bksfkeopbvvuwwlleasu)

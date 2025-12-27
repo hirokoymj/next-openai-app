@@ -17,12 +17,22 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <Header />
 
           <div className="flex min-h-[90vh]">
-            <nav className="w-48 bg-gray-100 p-4">
+            <nav className="w-50 bg-gray-100 p-4">
               <ul className="list-none p-0">
+                {/* OpenAI section */}
+                <li className="mb-2 text-xs font-semibold text-gray-500 uppercase">
+                  OpenAI
+                </li>
                 <LeftNav href="/recipe" title="AI Recipe" />
                 <LeftNav href="/summary" title="AI Summary" />
                 <LeftNav href="/image_generator" title="AI Image Generator" />
-                {/* <LeftNav href="/chat" title="AI Chat" /> */}
+                <hr className="my-3 border-gray-300" />
+                {/* Gemini section */}
+                <li className="mb-2 text-xs font-semibold text-gray-500 uppercase">
+                  Gemini
+                </li>
+                <LeftNav href="/file-chat" title="AI File Chat" />
+                <hr className="my-3 border-gray-300" />
                 <LeftNav href="/users" title="Users" />
               </ul>
             </nav>

@@ -30,14 +30,15 @@
 | Function calling   | [link](https://ai.google.dev/gemini-api/docs/function-calling?example=meeting) |
 | Prompt engineering | [link](https://ai.google.dev/gemini-api/docs/prompting-strategies)             |
 | Billing            | [link](https://aistudio.google.com/usage?timeRange=last-28-days)               |
+| Billing            | [link](https://aistudio.google.com/usage?timeRange=last-28-days)               |
 
 **Live Demo**: https://www.hirokoymj.com/ai-weather
 
 ## Vertex AI - RAG
 
-**Retrival Augmented Generation (RAG)**
+**Retrieval Augmented Generation (RAG)**
 
-AI architecture that combines LLMs with a data retrival system or other words a search engine.
+AI architecture that combines LLMs with a data retrieval system or other words a search engine.
 
 - [Build a Retrieval Augmented Generation AI App using Gemini](https://www.youtube.com/watch?v=kI8_KWfddYw)
 - [Build Vertex AI Search Apps](https://www.skills.google/focuses/71943?catalog_rank=%7B%22rank%22%3A2%2C%22num_filters%22%3A1%2C%22has_search%22%3Atrue%7D&parent=catalog&search_id=62332471)
@@ -78,20 +79,3 @@ const users = await db.user.getAll();
 - https://vercel.com/
 
 ## Next.js
-
-**React.js**
-
-- React.js is a JS library for buliding UI, while Next.js a full-stack framework on top of React.
-- Next.js - built-in routing, server-side rendering(SSR), performance optimizations out of the box.
-
-- Client-side rendering
-- slower to firest contentful paint
-- Invisible to search BOTS
-
-**Next.js**
-
-Static Generation - render all pages at build time. Good for data doesn't change often. Blog
-Server-Side Rendering - generat each page at request time.
-Incremental static regeenration - re-generate single pages in the background.
-
-SSG vs SSR vs ISR

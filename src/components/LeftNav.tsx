@@ -2,10 +2,20 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { RiOpenaiFill } from 'react-icons/ri';
+import { RiGeminiLine } from 'react-icons/ri';
 
 interface LeftNavProps {
   href: string;
   title: string;
+}
+
+{
+  /* <RiGeminiLine />
+	
+	<RiOpenaiFill />
+	
+	*/
 }
 
 export default function LeftNav({ href, title }: LeftNavProps) {
