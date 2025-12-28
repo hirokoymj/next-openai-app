@@ -5,9 +5,7 @@ export default function Header() {
   return (
     <header className="bg-blue-900 text-white p-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">
-          Next.js v16 + OpenAI | Gemini demo
-        </h1>
+        <h1 className="text-xl font-semibold">Next.js AI Full-Stack Demo</h1>
 
         <Link
           href="https://github.com/hirokoymj/next-openai-app"

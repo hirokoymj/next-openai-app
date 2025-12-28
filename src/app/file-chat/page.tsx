@@ -10,17 +10,11 @@ const headerInfo = {
   title: 'AI: Chat with File',
   provider: 'Google',
   model: 'Gemini 2.5 Flash-Lite',
-  repoUrl: 'https://github.com/hirokoymj/next-openai-app/src/app/file-chat',
-  referenceArray: [
-    {
-      label: 'Multi-turn conversations',
-      url: 'https://ai.google.dev/gemini-api/docs/text-generation#multi-turn-conversations',
-    },
-    {
-      label: 'System instructions',
-      url: 'https://ai.google.dev/gemini-api/docs/text-generation#system-instructions',
-    },
-  ],
+  repoUrl:
+    'https://github.com/hirokoymj/next-openai-app/tree/main/src/app/file-chat',
+  referenceUrl:
+    'https://ai.google.dev/gemini-api/docs/text-generation#multi-turn-conversations',
+  referenceLabel: 'Multimodal: text + image',
   stack: [
     'Backend (POST API, Gemini SDK), Frontend:(React Client Components, Base64, Chat history)',
   ],

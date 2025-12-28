@@ -23,15 +23,23 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <li className="mb-2 text-xs font-semibold text-gray-500 uppercase">
                   OpenAI
                 </li>
-                <LeftNav href="/recipe" title="AI Recipe" />
-                <LeftNav href="/summary" title="AI Summary" />
-                <LeftNav href="/image_generator" title="AI Image Generator" />
+                <LeftNav href="/recipe" title="AI Recipe" provider="openai" />
+                <LeftNav href="/summary" title="AI Summary" provider="openai" />
+                <LeftNav
+                  href="/image_generator"
+                  title="AI Image Generator"
+                  provider="openai"
+                />
                 <hr className="my-3 border-gray-300" />
                 {/* Gemini section */}
                 <li className="mb-2 text-xs font-semibold text-gray-500 uppercase">
                   Gemini
                 </li>
-                <LeftNav href="/file-chat" title="AI File Chat" />
+                <LeftNav
+                  href="/file-chat"
+                  title="AI File Chat"
+                  provider="gemini"
+                />
                 <hr className="my-3 border-gray-300" />
                 <LeftNav href="/users" title="Users" />
               </ul>
