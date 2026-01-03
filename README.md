@@ -96,5 +96,6 @@ src/
 
 ### References:
 
+- [Vercel -> Overview](https://vercel.com/hirokoymjs-projects)
+- [Vercel -> Deployments](https://vercel.com/hirokoymjs-projects/~/deployments)
 - [Supabase dashboard](https://supabase.com/dashboard/project/bksfkeopbvvuwwlleasu)
-- test

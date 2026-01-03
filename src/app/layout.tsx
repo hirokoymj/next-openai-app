@@ -40,6 +40,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                   title="AI File Chat"
                   provider="gemini"
                 />
+                <LeftNav href="/ai/recipe" title="Recipe" provider="gemini" />
                 <hr className="my-3 border-gray-300" />
                 <LeftNav href="/users" title="Users" />
               </ul>

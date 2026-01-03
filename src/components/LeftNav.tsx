@@ -11,14 +11,6 @@ interface LeftNavProps {
   provider?: 'openai' | 'gemini';
 }
 
-{
-  /* <RiGeminiLine />
-	
-	<RiOpenaiFill />
-	
-	*/
-}
-
 export default function LeftNav({ href, title, provider }: LeftNavProps) {
   const currentUrl = usePathname(); // get current path
   const isActive = currentUrl?.startsWith(href);
