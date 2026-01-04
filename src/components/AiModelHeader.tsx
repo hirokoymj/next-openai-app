@@ -20,7 +20,7 @@ export function AiModelHeader({ headerInfo }: { headerInfo: AiHeaderInfo }) {
   } = headerInfo;
 
   return (
-    <div className="bg-blue-50 border border-blue-200 rounded-xl shadow-sm p-5 mb-10">
+    <div className="bg-blue-50 border border-blue-200 rounded-xl shadow-sm p-5 mb-5">
       {/* TITLE */}
       <h1 className="text-2xl font-bold text-center mb-3">{title}</h1>
 

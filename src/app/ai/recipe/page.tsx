@@ -10,19 +10,6 @@ import {
   Alert,
   Typography,
 } from '@mui/material';
-import { AiModelHeader } from '@/components/AiModelHeader';
-
-const headerInfo = {
-  title: 'Recipe generator',
-  provider: 'Google',
-  model: 'Gemini ',
-  repoUrl:
-    'https://github.com/hirokoymj/next-openai-app/tree/main/src/app/ai/recipe/',
-  referenceUrl:
-    'https://ai.google.dev/gemini-api/docs/structured-output?example=recipe#streaming',
-  referenceLabel: 'Streaming',
-  stack: ['Backend: POST, Streaming, Structured Output'],
-};
 
 export default function RecipePage() {
   const [recipe, setRecipe] = useState('');
@@ -74,73 +61,119 @@ export default function RecipePage() {
 
   return (
     <Container maxWidth="lg">
-      <Grid container spacing={3} justifyContent="center">
+      <Grid container spacing={3}>
+        {/* PAGE TITLE */}
         <Grid size={{ xs: 12 }}>
-          <AiModelHeader headerInfo={headerInfo} />
-        </Grid>
-        <Grid size={{ xs: 12, md: 6 }}>
-          <b>Input</b>
-          <Paper sx={{ p: 2, mb: 4 }}>
-            <TextField
-              label="Recipe"
-              value={recipe}
-              fullWidth
-              required
-              error={!!recipeError}
-              helperText={recipeError}
-              onChange={(e) => {
-                setRecipe(e.target.value);
-                if (e.target.value.trim()) setRecipeError('');
-              }}
-              onBlur={() => {
-                if (!recipe.trim()) setRecipeError('Recipe is required.');
-              }}
-            />
-            <Button
-              sx={{ mt: 2 }}
-              variant="contained"
-              fullWidth
-              onClick={generateRecipe}
-              disabled={!recipe || loading}>
-              {loading ? 'Generating...' : 'Generate Recipe'}
-            </Button>
-          </Paper>
+          <div className="bg-blue-50 border border-blue-200 rounded-xl shadow-sm p-5 mb-5">
+            <h1 className="text-2xl font-bold text-center mb-3">
+              AI Recipe generator by Gemini
+            </h1>
+          </div>
         </Grid>
 
-        <Grid size={{ xs: 12, md: 6 }}>
-          <b>Output by Gemini</b>
-          <Paper sx={{ p: 2, minHeight: '100%' }}>
-            {error && <Alert severity="error">{error}</Alert>}
+        {/* MAIN CONTENT (INPUT + OUTPUT) */}
+        <Grid size={{ xs: 12, md: 9 }}>
+          <Grid container spacing={3}>
+            {/* INPUT */}
+            <Grid size={{ xs: 12, md: 6 }}>
+              <b>Input</b>
+              <Paper sx={{ p: 2, mb: 4 }}>
+                <TextField
+                  label="Recipe"
+                  value={recipe}
+                  fullWidth
+                  required
+                  error={!!recipeError}
+                  helperText={recipeError}
+                  onChange={(e) => {
+                    setRecipe(e.target.value);
+                    if (e.target.value.trim()) setRecipeError('');
+                  }}
+                  onBlur={() => {
+                    if (!recipe.trim()) setRecipeError('Recipe is required.');
+                  }}
+                />
+                <Button
+                  sx={{ mt: 2 }}
+                  variant="contained"
+                  fullWidth
+                  onClick={generateRecipe}
+                  disabled={!recipe || loading}>
+                  {loading ? 'Generating...' : 'Generate Recipe'}
+                </Button>
+              </Paper>
+            </Grid>
 
-            {loading && streamText && (
-              <pre style={{ whiteSpace: 'pre-wrap' }}>{streamText}</pre>
-            )}
+            {/* OUTPUT */}
+            <Grid size={{ xs: 12, md: 6 }}>
+              <b>Output by Gemini</b>
+              <Paper sx={{ p: 2, minHeight: '100%' }}>
+                {error && <Alert severity="error">{error}</Alert>}
 
-            {!loading && output && (
-              <>
-                <Typography variant="h5" gutterBottom>
-                  {output.recipeName}
-                </Typography>
+                {loading && streamText && (
+                  <pre style={{ whiteSpace: 'pre-wrap' }}>{streamText}</pre>
+                )}
 
-                <Typography variant="h6" gutterBottom>
-                  Ingredients
-                </Typography>
-                <ul className="list-disc list-inside space-y-1">
-                  {output.ingredients?.map((item: string, i: number) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
+                {!loading && output && (
+                  <>
+                    <Typography variant="h5" gutterBottom>
+                      {output.recipeName}
+                    </Typography>
 
-                <Typography variant="h6" gutterBottom>
-                  Steps
-                </Typography>
-                <ol className="list-decimal list-inside space-y-1">
-                  {output.steps?.map((step: string, i: number) => (
-                    <li key={i}>{step}</li>
-                  ))}
-                </ol>
-              </>
-            )}
+                    <Typography variant="h6" gutterBottom>
+                      Ingredients
+                    </Typography>
+                    <ul className="list-disc list-inside space-y-1">
+                      {output.ingredients?.map((item: string, i: number) => (
+                        <li key={i}>{item}</li>
+                      ))}
+                    </ul>
+
+                    <Typography variant="h6" gutterBottom>
+                      Steps
+                    </Typography>
+                    <ol className="list-decimal list-inside space-y-1">
+                      {output.steps?.map((step: string, i: number) => (
+                        <li key={i}>{step}</li>
+                      ))}
+                    </ol>
+                  </>
+                )}
+              </Paper>
+            </Grid>
+          </Grid>
+        </Grid>
+
+        {/* TECH STACK CARD */}
+        <Grid size={{ xs: 12, md: 3 }}>
+          <Paper
+            sx={{
+              p: 2,
+              bgcolor: 'grey.100',
+              height: '100%',
+            }}>
+            <Typography variant="h6" gutterBottom>
+              Tech Stack
+            </Typography>
+
+            <ul className="list-disc list-inside space-y-1 text-sm">
+              <li>Google Gemini 2.5 Flash-Lite</li>
+              <li>Next.js (App Router)</li>
+              <li>Streaming API</li>
+              <li>Structured Output (JSON)</li>
+              <li>Frontend: POST (fetch)</li>
+              <li>
+                Backend API: <b>/api/ai/recipe</b>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/hirokoymj/next-openai-app/tree/main/src/app/ai/recipe"
+                  target="_blank"
+                  className="text-blue-700 font-medium hover:underline">
+                  <b>GitHub</b>
+                </a>
+              </li>
+            </ul>
           </Paper>
         </Grid>
       </Grid>
