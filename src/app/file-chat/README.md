@@ -1,61 +1,101 @@
-# App Overview
+# AI Chat with File (Gemini)
 
-**AI: Chat with File** is a Next.js application that allows users to upload a file (image) and have a multi-turn conversation with Google **Gemini 2.5 Flash-Lite** about that file.
-The application uses **Next.js App Router** to separate frontend UI logic from backend AI execution for security, scalability, and maintainability.
+### Tech Stack
 
-## Tech Stack Summary
-
-**Frontend**
-
-- Next.js (App Router)
-- React Client Components
-- Custom Hooks (file → Base64 conversion)
-- Chat history state
-
-**Backend**
-
-- Next.js App Route (route.ts)
-- POST API
-- Google Gemini SDK (@google/genai)
-
-**AI**
-
-- Provider: Google
-- Model: Gemini 2.5 Flash-Lite
-- Mode: Multi-turn conversation with system instructions
+- **AI**: Google Gemini 2.5 Flash-Lite
+- **Framework**: Next.js (App Router)
+- **Frontend**: React, Fetch API (POST), Base64 image upload
+- **Backend**: Next.js Route Handler, Gemini SDK
 
 <hr />
 
-### POST Request to Backend
-
-`POST /api/file-chat`
-
-**Payload**
+### API: `/api/file-chat`
 
 ```js
+POST /api/file-chat
+
+Request:
 {
-  message: string,
-  history: ChatHistory[],
-  image?: {
-    mimeType: string,
-    data: base64
-  }
+  message: string,		// User's question
+  file?: { type: string, base64: string },
+  history: ChatMessage[]
+}
+
+Response:
+{
+  text: string, // Gemini's latest reply
+  updatedHistory: ChatMessage[]
 }
 ```
 
-**Chat Session Reconstruction**
+### ChatMessage
+
+```ts
+type ChatMessage = {
+  role: 'user' | 'model';
+  parts: (
+    | { text: string }
+    | { inlineData: { mimeType: string; data: string } }
+  )[];
+};
+```
+
+### Notes
+
+- The uploaded image is sent **once** at the beginning of the conversation.
+- Subsequent requests rely on `history` to preserve context.
+- inlineData.data must contain pure Base64 bytes (no data:image/... prefix).
+- This endpoint supports **multimodal chat (text + image)** using Gemini chat sessions.
+
+<hr />
+
+### Example Request
 
 ```js
-export async function POST(req: NextRequest) {
-  try {
-    const chat = ai.chats.create({
-      model: 'gemini-2.5-flash-lite',
-      config: {
-        systemInstruction:
-          'You are a chatbot that answers questions about an uploaded image.',
-      },
-      history,
-    });
-  } catch (error) {}
+POST /api/file-chat
+Content-Type: application/json
+```
+
+```js
+{
+  "message": "What is the city name?",
+  "file": {
+    "type": "image/jpeg",
+    "base64": "<BASE64_IMAGE_BYTES>"
+  },
+  "history": []
+}
+```
+
+### Example Response
+
+```js
+{
+  "text": "Honolulu.",
+  "updatedHistory": [
+    {
+      "role": "user",
+      "parts": [
+        {
+          "inlineData": {
+            "mimeType": "image/jpeg",
+            "data": "<BASE64_IMAGE_BYTES>"
+          }
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "parts": [
+        { "text": "What is the city name?" }
+      ]
+    },
+    {
+      "role": "model",
+      "parts": [
+        { "text": "Honolulu." }
+      ]
+    }
+  ]
 }
 ```
