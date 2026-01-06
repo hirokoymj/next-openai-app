@@ -7,7 +7,7 @@ import { useBase64Image } from './useBase64Image';
 import { AiModelHeader } from '@/components/AiModelHeader';
 
 const headerInfo = {
-  title: 'AI: Chat with File',
+  title: 'AI File Chat by Gemini',
   provider: 'Google',
   model: 'Gemini 2.5 Flash-Lite',
   repoUrl:

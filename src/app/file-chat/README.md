@@ -1,4 +1,4 @@
-# AI Chat with File (Gemini)
+# AI File Chat by Gemini
 
 ### Tech Stack
 
@@ -6,6 +6,7 @@
 - **Framework**: Next.js (App Router)
 - **Frontend**: React, Fetch API (POST), Base64 image upload
 - **Backend**: Next.js Route Handler, Gemini SDK
+- **AI feature**: Multi-turn conversation(chat): `ai.chats.create({...})`
 
 <hr />
 
@@ -46,6 +47,15 @@ type ChatMessage = {
 - Subsequent requests rely on `history` to preserve context.
 - inlineData.data must contain pure Base64 bytes (no data:image/... prefix).
 - This endpoint supports **multimodal chat (text + image)** using Gemini chat sessions.
+
+  ![](../../../public/screenshots/ai-filechat.png)
+
+<hr />
+
+### Code
+
+- Frontend (UI): [page.ts](./page.tsx)
+- Backend API (POST): [route.ts](../api/file-chat/route.ts)
 
 <hr />
 
@@ -99,3 +109,11 @@ Content-Type: application/json
   ]
 }
 ```
+
+<hr />
+
+## Gemini API Docs
+
+- [Multi-turn conversations (chat)](https://ai.google.dev/gemini-api/docs/text-generation#multi-turn-conversations)
+
+  > Collect multiple rounds of prompts and responses into a chat.
