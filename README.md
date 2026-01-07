@@ -2,18 +2,19 @@
 
 **Live URL:** https://next-openai-app-ruby.vercel.app/
 
-## 🚀 Overview
+## Overview
 
 A collection of small AI-driven applications built with Next.js 16, OpenAI GPT-5.0, and TanStack Query. This project demonstrates modern frontend practices, API routes, data fetching, server-side actions, and AI integration
 
 ## Tech Stack
 
-- **Next.js 16**
-- **OpenAI GPT-5.0 models**
-- **TanStack Query v5**
-- **Supabase database**
-- **Vercel** (production deployment)
-- **TypeScript**
+- Next.js 16
+- Google Gemini 2.5 Flash
+- OpenAI GPT-5.0 models
+- TanStack Query v5
+- Supabase database
+- Vercel (production deployment)
+- TypeScript
 
 ## Applications Included
 
@@ -53,49 +54,19 @@ A collection of small AI-driven applications built with Next.js 16, OpenAI GPT-5
 
 <hr />
 
-## Folder Structure
-
-```css
-src/
- ├── app/
- │    ├── api/
- │    │    ├── users/
- │    │    │    └── route.ts
- │    │    └── image_generator/
- │    │    │     └── route.ts
- │    │    └── recipe/
- │    │    │     └── route.ts
- │    │    └── summary/
- │    │         └── route.ts
- │    ├── recipe/
- │    │    └── page.tsx
- │    ├── summary/
- │    │    └── page.tsx
- │    ├── image_generator/
- │    │    └── page.tsx
- │    ├── users/
- │    │    └── page.tsx
- │    └── page.tsx  ← redirects to recipe
- │
- ├── components/
- │    ├── Header.tsx
- │    ├── Footer.tsx
- │    ├── LeftNav.tsx
- │    └── ExampleTable.tsx
- │
- ├── utils/
- │    └── formValidation.ts
- │
- ├── types/
- │    └── index.ts
- │
- └── lib/
-      └── openai.ts
-      └── supabaseClient.ts
-```
-
 ### References:
 
-- [Vercel -> Overview](https://vercel.com/hirokoymjs-projects)
-- [Vercel -> Deployments](https://vercel.com/hirokoymjs-projects/~/deployments)
+**Vercel**
+
+- [Overview](https://vercel.com/hirokoymjs-projects)
+- [Deployments](https://vercel.com/hirokoymjs-projects/~/deployments)
+- [Environment Variables](https://vercel.com/hirokoymjs-projects/~/settings)
+
+**Database**
+
 - [Supabase dashboard](https://supabase.com/dashboard/project/bksfkeopbvvuwwlleasu)
+
+**Google Cloud**
+
+- [GCP API key restrictions](https://docs.cloud.google.com/docs/authentication/api-keys#api_key_restrictions)
+- Application restrictions and API restrictions.
