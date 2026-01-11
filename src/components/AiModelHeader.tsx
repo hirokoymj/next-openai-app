@@ -6,6 +6,7 @@ interface AiHeaderInfo {
   referenceUrl?: string;
   referenceLabel?: string;
   stack?: string[];
+  flow?: string;
 }
 
 export function AiModelHeader({ headerInfo }: { headerInfo: AiHeaderInfo }) {
@@ -17,6 +18,7 @@ export function AiModelHeader({ headerInfo }: { headerInfo: AiHeaderInfo }) {
     referenceUrl,
     referenceLabel,
     stack,
+    flow,
   } = headerInfo;
 
   return (
@@ -61,6 +63,14 @@ export function AiModelHeader({ headerInfo }: { headerInfo: AiHeaderInfo }) {
             <span>|</span>
             <span>
               <b>Stack:</b> {stack.join(', ')}
+            </span>
+          </>
+        )}
+        {flow && (
+          <>
+            <span>|</span>
+            <span>
+              <b>Flow:</b> {flow}
             </span>
           </>
         )}

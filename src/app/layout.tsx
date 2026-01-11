@@ -29,6 +29,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                   provider="gemini"
                 />
                 <LeftNav href="/ai/recipe" title="Recipe" provider="gemini" />
+                <LeftNav
+                  href="/filesearch"
+                  title="File Search (RAG)"
+                  provider="gemini"
+                />
+
                 <hr className="my-3 border-gray-300" />
                 {/* OpenAI section */}
                 <li className="mb-2 text-xs font-semibold text-gray-500 uppercase">
