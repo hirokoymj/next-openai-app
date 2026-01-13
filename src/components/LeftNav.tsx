@@ -12,8 +12,9 @@ interface LeftNavProps {
 }
 
 export default function LeftNav({ href, title, provider }: LeftNavProps) {
-  const currentUrl = usePathname(); // get current path
-  const isActive = currentUrl?.startsWith(href);
+  const pathname = usePathname();
+  const isActive =
+    pathname === href || (pathname === '/' && href === '/filesearch');
 
   const icon =
     provider === 'openai' ? (
