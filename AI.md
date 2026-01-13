@@ -1,4 +1,21 @@
-# AI keyword
+# AI keywords
+
+```text
+Temperature = Randomness | Factual <=> Creative, Hallucination
+TopK = limits tokens by a fix number | Few choices <=> More choices
+TopP = limits tokens by probability | Safe words <=> A large pool of words
+RAG = SS (Semantic Search)
+Token = English character, x, cat 1 token = 4 character
+Zero-shot prompting
+Few-shot prompting - With examples (pair of input output)
+Structure output, System instruction
+```
+
+## My notes
+
+| Task                   | Temperature | TopK | TopP |
+| ---------------------- | ----------- | ---- | ---- |
+| Analyze financial news | 0.2         | 40   | 0.95 |
 
 ## 🔹 Temperature, Top-K vs Top-P
 
@@ -10,11 +27,11 @@
 
 **ultra-simple version**
 
-| Parameter   | Low value       | High value                   |
-| ----------- | --------------- | ---------------------------- |
-| Temperature | Randomness      | Random / hallucination-prone |
-| TopK        | Few choices     | More choices (fixed number)  |
-| TopP        | Safe words only | Larger pool of words         |
+| Parameter   | Low value       | High value                  |
+| ----------- | --------------- | --------------------------- |
+| Temperature | Randomness      | Random hallucination-prone  |
+| TopK        | Few choices     | More choices (fixed number) |
+| TopP        | Safe words only | Larger pool of words        |
 
 - (one-liner) Temperature controls randomness, while Top-P / Top-K control token selection boundaries.
 
