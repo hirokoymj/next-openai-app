@@ -1,4 +1,4 @@
-# My Tech References
+# AI
 
 ## OpenAI (GPT 5.0)
 
@@ -34,18 +34,6 @@
 
 **Live Demo**: https://www.hirokoymj.com/ai-weather
 
-## Vertex AI - RAG
-
-**Retrieval Augmented Generation (RAG)**
-
-AI architecture that combines LLMs with a data retrieval system or other words a search engine.
-
-- [Build a Retrieval Augmented Generation AI App using Gemini](https://www.youtube.com/watch?v=kI8_KWfddYw)
-- [Build Vertex AI Search Apps](https://www.skills.google/focuses/71943?catalog_rank=%7B%22rank%22%3A2%2C%22num_filters%22%3A1%2C%22has_search%22%3Atrue%7D&parent=catalog&search_id=62332471)
-- [Process a PDF file with Gemini](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/samples/generativeaionvertexai-gemini-pdf)
-- [Pricing](https://cloud.google.com/vertex-ai/generative-ai/pricing)
-- [models - Gemini 2.5 Flash-Lite](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/2-5-flash-lite)
-
 ## TansStack Query API
 
 - [useQuery](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery)
@@ -77,5 +65,3 @@ const users = await db.user.getAll();
 ## Deploy - Vercel
 
 - https://vercel.com/
-
-## Next.js

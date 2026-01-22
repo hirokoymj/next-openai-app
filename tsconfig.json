@@ -32,7 +32,9 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "src/app/test/page.tsx.old",
-    "src/app/math/page.tsx.old"
+    "src/app/math/page.tsx.old",
+    "src/app/blog/page.tsx",
+    "src/app/registration/actions.js"
   ],
   "exclude": ["node_modules"]
 }

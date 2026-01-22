@@ -49,6 +49,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 />
                 <hr className="my-3 border-gray-300" />
                 <LeftNav href="/users" title="Users" />
+                <LeftNav href="/registration" title="Server Actions" />
               </ul>
             </nav>
 
