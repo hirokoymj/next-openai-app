@@ -1,8 +1,10 @@
+# Next.js Server Actions Architect
+
 **Summary (final)**
 
 - **Server Actions (actions.ts)** : POST mutations (Create/Update/Delete). Use with `<form action> or startTransition`
 - **Server Functions (actions.ts)**: Standard async functions for fetching data - `async/await`.
-- **revalidatePath**: Clears the server cache to show updated data after a mutation.
+- **revalidatePath**: Tells Next.js the data is old. Clears the server cache.
 - **Component Split**: Server (Data fetching) vs Client (state)
 - **Server Components (default)**: Zero JS sent to the client; **Direct DB ACCESS**
 - **Client Component**: useState, useEffect, a Custom Hook.
@@ -79,7 +81,7 @@ https://react.dev/reference/react/useTransition
 - [Next.js revalidatePath](https://nextjs.org/docs/app/api-reference/functions/revalidatePath)
 - import { revalidatePath } from 'next/cache';
 
-# Dynamic Routes (params)
+## Dynamic Routes (params)
 
 - `const { id } = await params`
 - https://nextjs.org/docs/messages/sync-dynamic-apis
@@ -93,3 +95,12 @@ async function Page({ params }) {
   return <p>ID: {id}</p>;
 }
 ```
+
+## Data flow
+
+1. Trigger: The user clicks "Save" in the EditFormClient.
+2. Action: updateUser runs on the server.
+3. Mutation: The users array is updated.
+4. Signal: revalidatePath tells Next.js the data is old.
+5. Redirect: The browser moves to /registration.
+6. Refresh: The Server Component page.tsx re-runs getUsers() and sends the fresh HTML.
