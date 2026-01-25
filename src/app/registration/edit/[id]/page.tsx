@@ -1,5 +1,5 @@
 import { getUserById } from '../../actions';
-import EditFormClient from './EditFormClient';
+import EditForm from './EditForm';
 import { notFound } from 'next/navigation';
 
 export default async function EditPage({ params }: { params: { id: string } }) {
@@ -13,7 +13,7 @@ export default async function EditPage({ params }: { params: { id: string } }) {
   return (
     <div style={{ padding: '20px' }}>
       <h2>Edit User</h2>
-      <EditFormClient user={user} />
+      <EditForm user={user} />
     </div>
   );
 }

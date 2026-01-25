@@ -13,14 +13,14 @@ export async function getUsers() {
 
 export async function deleteUser(userId: number) {
   users = users.filter((u) => u.id !== userId);
-  revalidatePath('/registration');
+  revalidatePath('/challenge');
 }
 
 export async function getUserById(id: number) {
   return users.find((u) => u.id === id);
 }
 
-export async function updateUser(prevState: any, formData: FormData) {
+export async function editUser(prevState: any, formData: FormData) {
   const id = Number(formData.get('id'));
   const firstName = formData.get('firstName')?.toString();
   const lastName = formData.get('lastName')?.toString();

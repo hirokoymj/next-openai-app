@@ -2,27 +2,43 @@
 
 **Summary (final)**
 
-- **Server Actions (actions.ts)** : POST mutations (Create/Update/Delete). Use with `<form action> or startTransition`
-- **Server Functions (actions.ts)**: Standard async functions for fetching data - `async/await`.
+- **Server Actions (actions.ts)** : CRUD(Create/Read/Update/Delete) logic, async/await, Use with `<form action> or startTransition`
 - **revalidatePath**: Tells Next.js the data is old. Clears the server cache.
-- **Component Split**: Server (Data fetching) vs Client (state)
+- **Component Split**: Server (Data fetching) vs Client (state, event handlers)
 - **Server Components (default)**: Zero JS sent to the client; **Direct DB ACCESS**
-- **Client Component**: useState, useEffect, a Custom Hook.
-- **useActionState**: For Forms - returns states, formAction, isPending.
-- **useTransition**: For Buttons with Server Actions. Returns `isPending` and `startTransition`.
+- **Client Component**: state - useState, useEffect...
+- **useActionState**: For Forms - `[states, formAction, isPending]`
+- **useTransition**: For Buttons `[isPending, startTransition]`
 - **Dynamic Routes**: `const { id } = await params`
 - **Route Handler (route.ts)**: External API, `fetch('/api/...')` from anywhere.
 
 <hr />
 
-Demo app:
+**Demo app:**
 
-| Feature                   | Defined In          | Used For           | Called Via                                    |
-| ------------------------- | ------------------- | ------------------ | --------------------------------------------- |
-| Server Action             | actions.ts          | Writing Data       | `<form action>` or `startTransition`          |
-| Server Function           | actions.ts or utils | Reading Data       | Direct `await` in Server Components           |
-| Server / Client Component | Component file      | Rendering Strategy | Server Component (default) ⇄ Client Component |
-| Route Handler             | route.ts            | External API       | `fetch('/api/...')` from anywhere             |
+- http://localhost:3000/registration
+- http://localhost:3000/registration/register-form
+- http://localhost:3000/registration/edit/1
+
+```js
+src/app/
+└── registration/
+    ├── page.tsx               <-- Server-side fetch
+    ├── DeleteButton.tsx       <-- Client component
+    ├── actions.ts             <-- Server Actions (CRUD)
+    ├── register-form/
+    │   └── page.tsx           <-- URL: Create Form
+    └── edit/
+        └── [id]/
+            ├── page.tsx       <-- The Hydrator
+            └── EditForm.tsx   <-- Edit Form
+```
+
+<hr />
+
+## actions.ts
+
+`submitUser, getUsers, deleteUser, getUserById, updateUser`
 
 <hr />
 
@@ -52,6 +68,18 @@ Demo app:
 - `const [isPending, startTransition] = useTransition()`
 - `startTransition(action)`
 - `startTransition(async () => await deleteUser(id))`
+
+```ts
+const [isPending, startTransition] = useTransition();
+
+return (
+
+  <button
+    disabled={isPending}
+    onClick={() => startTransition(() => deleteUser(id))}>
+    {isPending ? 'Deleting...' : 'Delete'}
+  </button>
+```
 
 **References:**
 https://react.dev/reference/react/useTransition
@@ -104,3 +132,11 @@ async function Page({ params }) {
 4. Signal: revalidatePath tells Next.js the data is old.
 5. Redirect: The browser moves to /registration.
 6. Refresh: The Server Component page.tsx re-runs getUsers() and sends the fresh HTML.
+
+##
+
+```js
+import { redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
+import Link from 'next/link';
+```

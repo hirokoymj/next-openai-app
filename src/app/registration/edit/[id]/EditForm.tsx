@@ -1,9 +1,9 @@
 'use client';
 import { useActionState } from 'react';
-import { updateUser } from '../../actions';
+import { editUser } from '../../actions';
 
-export default function EditFormClient({ user }: { user: any }) {
-  const [state, formAction, isPending] = useActionState(updateUser, null);
+export default function EditForm({ user }: { user: any }) {
+  const [state, formAction, isPending] = useActionState(editUser, null);
 
   return (
     <form
@@ -14,7 +14,6 @@ export default function EditFormClient({ user }: { user: any }) {
         gap: '10px',
         width: '300px',
       }}>
-      {/* Hidden input to pass the ID to the server action */}
       <input type="hidden" name="id" value={user.id} />
 
       <input
