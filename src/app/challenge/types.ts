@@ -15,4 +15,4 @@ export type UserActionState =
       message: string;
       errors?: Record<string, string[]>; // Useful for Zod field errors
     }
-  | null; // Initial state before submission
+  | null;

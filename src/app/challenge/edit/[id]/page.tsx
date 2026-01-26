@@ -1,6 +1,6 @@
 import EditForm from './EditForm';
 import { getUserById } from '../../actions';
-import { User, FormState } from '../../types';
+import { notFound } from 'next/navigation'; // 1. Import notFound
 
 export default async function EditFormPage({
   params,
@@ -9,6 +9,10 @@ export default async function EditFormPage({
 }) {
   const { id } = await params;
   const user = await getUserById(Number(id));
+
+  if (!user) {
+    notFound();
+  }
 
   return (
     <div>
