@@ -9,10 +9,11 @@ export async function getUsers(): Promise<User[]> {
   return await readDb();
 }
 
-export async function getUserById(userId: number): Promise<User> {
+export async function getUserById(userId: number): Promise<User | null> {
   try {
     const users: User[] = await readDb();
-    return users.find((u) => u.id === userId) || null;
+    const foundUser = users.find((u) => u.id === userId);
+    return foundUser ? foundUser : null;
   } catch (e) {
     console.error(e);
     return null;
