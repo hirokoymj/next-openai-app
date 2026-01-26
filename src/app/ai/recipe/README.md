@@ -56,7 +56,7 @@ type RecipeState =
   | null;
 ```
 
-## Gemni API usage
+## Gemini API usage
 
 ```ts
 const response = await ai.models.generateContent({

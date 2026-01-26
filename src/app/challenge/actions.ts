@@ -2,62 +2,11 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import fs from 'fs/promises';
-import path from 'path';
-import { User, FormState } from './types';
+import { readDb, writeDb } from './db';
+import { User, UserActionState } from './types';
 
-const DATA_PATH = path.join(process.cwd(), 'data.json');
-
-async function readDb(): Promise<User[]> {
-  try {
-    const data = await fs.readFile(DATA_PATH, 'utf-8');
-    return JSON.parse(data);
-  } catch {
-    return [
-      { id: 1, firstName: 'John', lastName: 'Doe' },
-      { id: 2, firstName: 'Jane', lastName: 'Smith' },
-    ];
-  }
-}
-async function writeDb(users: User[]) {
-  await fs.writeFile(DATA_PATH, JSON.stringify(users, null, 2));
-}
-//===START: CRUD logic
-export async function getUsers() {
+export async function getUsers(): Promise<User[]> {
   return await readDb();
-}
-
-export async function submitUser(prevState: any, formData: FormData) {
-  try {
-    const firstName = formData.get('firstName')?.toString();
-    const lastName = formData.get('lastName')?.toString();
-
-    if (!firstName || !lastName)
-      return { success: false, message: 'Required.' };
-
-    const users: User[] = await readDb();
-    users.push({ id: Date.now(), firstName, lastName });
-
-    await writeDb(users);
-  } catch (e) {
-    return { success: false, message: 'Failed to save' };
-  }
-
-  revalidatePath('/challenge');
-  redirect('/challenge');
-}
-
-export async function deleteUser(userId: number) {
-  try {
-    const users: User[] = await readDb();
-    const updatedUsers = users.filter((u) => u.id !== userId);
-
-    await writeDb(updatedUsers);
-  } catch (e) {
-    return { success: false, message: 'Failed to delete' };
-  }
-
-  revalidatePath('/challenge');
 }
 
 export async function getUserById(userId: number): Promise<User | null> {
@@ -70,7 +19,33 @@ export async function getUserById(userId: number): Promise<User | null> {
   }
 }
 
-export async function editUser(prevState: any, formData: FormData) {
+export async function submitUser(
+  prevState: UserActionState,
+  formData: FormData,
+): Promise<UserActionState> {
+  try {
+    const firstName = formData.get('firstName')?.toString();
+    const lastName = formData.get('lastName')?.toString();
+
+    if (!firstName || !lastName)
+      return { success: false, message: 'First and Last names are required.' };
+
+    const users: User[] = await readDb();
+    users.push({ id: Date.now(), firstName, lastName });
+
+    await writeDb(users);
+  } catch (e) {
+    return { success: false, message: 'Failed to save user to database.' };
+  }
+
+  revalidatePath('/challenge');
+  redirect('/challenge');
+}
+
+export async function editUser(
+  prevState: UserActionState,
+  formData: FormData,
+): Promise<UserActionState> {
   try {
     const id = Number(formData.get('id'));
     const firstName = formData.get('firstName')?.toString() || '';
@@ -88,4 +63,17 @@ export async function editUser(prevState: any, formData: FormData) {
   }
   revalidatePath('/challenge');
   redirect('/challenge');
+}
+
+export async function deleteUser(userId: number) {
+  try {
+    const users: User[] = await readDb();
+    const updatedUsers = users.filter((u) => u.id !== userId);
+
+    await writeDb(updatedUsers);
+  } catch (e) {
+    return { success: false, message: 'Failed to delete' };
+  }
+
+  revalidatePath('/challenge');
 }

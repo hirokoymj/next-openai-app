@@ -4,8 +4,15 @@ export interface User {
   lastName: string;
 }
 
-export interface FormState {
-  success: boolean;
-  message?: string;
-  errors?: Record<string, string[]>;
-}
+export type UserActionState =
+  | {
+      success: true;
+      message?: string;
+      errors?: never;
+    }
+  | {
+      success: false;
+      message: string;
+      errors?: Record<string, string[]>; // Useful for Zod field errors
+    }
+  | null; // Initial state before submission

@@ -1,10 +1,9 @@
 import { getUsers } from './actions';
 import Link from 'next/link';
 import { DeleteButton } from './DeleteButton';
-import { User } from 'types';
 
 export default async function UserListPage() {
-  const users: User[] = await getUsers();
+  const users = await getUsers();
   return (
     <div>
       <Link href="/challenge/add-form">Add New User</Link>
