@@ -14,7 +14,7 @@ interface LeftNavProps {
 export default function LeftNav({ href, title, provider }: LeftNavProps) {
   const pathname = usePathname();
   const isActive =
-    pathname === href || (pathname === '/' && href === '/filesearch');
+    pathname === href || (pathname === '/' && href === '/recipe');
 
   const icon =
     provider === 'openai' ? (
