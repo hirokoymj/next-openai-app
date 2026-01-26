@@ -1,56 +1,23 @@
-# Next.js + OpenAI + TanStack Query app
+# Next.js + Gemini + OpenAI + Server Actions
 
 **Live URL:** https://next-openai-app-ruby.vercel.app/
 
-## Overview
-
-A collection of small AI-driven applications built with Next.js 16, OpenAI GPT-5.0, and TanStack Query. This project demonstrates modern frontend practices, API routes, data fetching, server-side actions, and AI integration
-
 ## Tech Stack
 
-- Next.js 16
+**Frontend**
+
+- React `useActionState`
+- Material UI (MUI)
+
+**Backend**
+
+- Next.js 16 (App Router)
+- Server Actions (actions.ts)
 - Google Gemini 2.5 Flash
 - OpenAI GPT-5.0 models
 - TanStack Query v5
 - Supabase database
-- Vercel (production deployment)
-- TypeScript
-
-## Applications Included
-
-### Users App
-
-- Full CRUD
-- REST API using Next.js Route Handlers
-- TanStack Query (fetching, caching, optimistic updates)
-
-![Users App](./public/screenshots/users.png)
-
-<hr />
-
-### Recipe Generator
-
-- AI-generated recipes using GPT-5.0
-- Using Structured output
-- TanStack Query for mutation handling.
-
-![AI Recipe Generator](./public/screenshots/ai-gen-recipe.png)
-
-<hr />
-
-### Sumamry Generator
-
-- Summarizes the text into one short paragraph (less than 300 characters). Three styles are available: **Short**, **Medium**, and **Bullet**.
-- Uses TanStack Query for mutation handling
-
-![AI Summary Generator](./public/screenshots/ai-gen-summary.png)
-
-### Image Generator
-
-- Using OpenAI cheapest AI model (DALL·E)
-- TanStack Query for mutation handling.
-
-![AI Image Generator](./public/screenshots/ai-gen-img.png)
+- Vercel (Build and deployment)
 
 <hr />
 
@@ -70,3 +37,6 @@ A collection of small AI-driven applications built with Next.js 16, OpenAI GPT-5
 
 - [GCP API key restrictions](https://docs.cloud.google.com/docs/authentication/api-keys#api_key_restrictions)
 - Application restrictions and API restrictions.
+
+**Next.js**
+https://nextjs.org/docs/app/getting-started/updating-data

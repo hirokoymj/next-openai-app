@@ -30,7 +30,7 @@ app/
 
 ---
 
-## `useActionState` and RecipeState type
+## `useActionState` and state type
 
 ```ts
 const [state, formAction, isPending] = useActionState<RecipeState, FormData>(
