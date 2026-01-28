@@ -1,119 +1,72 @@
-# AI File Chat by Gemini
+# File Chat by Gemini
 
-### Tech Stack
+### Tech Stack & Architectures
 
-- **AI**: Google Gemini 2.5 Flash-Lite
-- **Framework**: Next.js (App Router)
-- **Frontend**: React, Fetch API (POST), Base64 image upload
-- **Backend**: Next.js Route Handler, Gemini SDK
-- **AI feature**: Multi-turn conversation(chat): `ai.chats.create({...})`
+**Backend**
 
-<hr />
+- **Next.js 16** (App Router)
+- **Server Actions**: Leveraging `useActionState` for seamless Client-Server communication.
+- **Gemini API (Gemini 2.5 Flash-Lite)**: Utilizing `chats.create` for session management and `chat.sendMessage` for multi-modal turns.
+- **Zod**: Server-side form validation.
 
-### API: `/api/file-chat`
+**Frontend**
+
+- **React useActionState**: Manages UI state, loading indicators, and server responses.
+- **Custom Hook (`useBase64Image`)**: Handles client-side file validation (4MB limit), Base64 encoding, and memory management via `URL.revokeObjectURL`.
+- **Material UI (MUI)**: Responsive design and accessible components.
+
+---
+
+### Project Structure
 
 ```js
-POST /api/file-chat
 
-Request:
-{
-  message: string,		// User's question
-  file?: { type: string, base64: string },
-  history: ChatMessage[]
-}
-
-Response:
-{
-  text: string, // Gemini's latest reply
-  updatedHistory: ChatMessage[]
-}
+src/app/file-chat/
+├── actions.ts 			# Server Actions: Gemini SDK logic & Chat history management
+├── Chat.tsx 			# Client Component: The main chat interface & message rendering
+├── FileUpload.tsx 		# Client Component: Upload a file
+├── page.tsx 			# Server Component: Feature entry point
+└── useBase64Image.ts   # Custom Hook: Base64 conversion & memory cleanup
 ```
 
-### ChatMessage
+### The Input (Payload)
 
-```ts
-type ChatMessage = {
-  role: 'user' | 'model';
-  parts: (
-    | { text: string }
-    | { inlineData: { mimeType: string; data: string } }
-  )[];
+- **Message**: The user's text prompt.
+- **History**: The previous messages.
+- **Image**: The uploaded image by a user. The Base64 data (only included on the first message to save bandwidth).
+
+```js
+const [state, formAction, isPending] = useActionState<ChatState, FormData>(submitPrompt);
+```
+
+### The Output (Response State)
+
+The Server Action returns a ChatState object that React uses to update the UI:
+
+- **success**: Boolean toggle to reset the form or show errors.
+- **text**: The latest string response from Gemini.
+- **updatedHistory**: The new conversation array (including the AI's response).
+- **error**: A string message if something goes wrong (e.g., "API Key missing").
+
+```js
+type ChatState = {
+  success: boolean;
+  text?: string;
+  updatedHistory: any[];
+  error?: string;
 };
 ```
 
-### Notes
+### Screenshot
 
-- The uploaded image is sent **once** at the beginning of the conversation.
-- Subsequent requests rely on `history` to preserve context.
-- inlineData.data must contain pure Base64 bytes (no data:image/... prefix).
-- This endpoint supports **multimodal chat (text + image)** using Gemini chat sessions.
+![](../../../public/screenshots/gemini-file-chat.png)
 
-  ![](../../../public/screenshots/ai-filechat.png)
+### References
 
-<hr />
+- [Gemini API: Multi-turn conversations](https://ai.google.dev/gemini-api/docs/text-generation#multi-turn-conversations)
+- [@google/genai: sendMessage](https://googleapis.github.io/js-genai/release_docs/classes/chats.Chat.html#sendmessage)
+- [@google/genai: Chat Creation](https://googleapis.github.io/js-genai/release_docs/classes/chats.Chats.html#create)
 
-### Code
+<!-- "I used Next.js Server Actions with the useActionState hook. This allows for a unary data flow: the client sends a snapshot of the current state, the server processes it with the Gemini SDK, and returns a new state object that React uses to re-render the chat history automatically." -->
 
-- Frontend (UI): [page.ts](./page.tsx)
-- Backend API (POST): [route.ts](../api/file-chat/route.ts)
-
-<hr />
-
-### Example Request
-
-```js
-POST /api/file-chat
-Content-Type: application/json
-```
-
-```js
-{
-  "message": "What is the city name?",
-  "file": {
-    "type": "image/jpeg",
-    "base64": "<BASE64_IMAGE_BYTES>"
-  },
-  "history": []
-}
-```
-
-### Example Response
-
-```js
-{
-  "text": "Honolulu.",
-  "updatedHistory": [
-    {
-      "role": "user",
-      "parts": [
-        {
-          "inlineData": {
-            "mimeType": "image/jpeg",
-            "data": "<BASE64_IMAGE_BYTES>"
-          }
-        }
-      ]
-    },
-    {
-      "role": "user",
-      "parts": [
-        { "text": "What is the city name?" }
-      ]
-    },
-    {
-      "role": "model",
-      "parts": [
-        { "text": "Honolulu." }
-      ]
-    }
-  ]
-}
-```
-
-<hr />
-
-## Gemini API Docs
-
-- [Multi-turn conversations (chat)](https://ai.google.dev/gemini-api/docs/text-generation#multi-turn-conversations)
-
-  > Collect multiple rounds of prompts and responses into a chat.
+<!-- using Server Actions, you never expose your GEMINI_API_KEY to the browser. The browser only sees the final text response, keeping your credentials and system instructions safely on the server. -->

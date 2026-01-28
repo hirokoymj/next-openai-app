@@ -1,112 +1,120 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { Box, TextField, Button, Paper, CircularProgress } from '@mui/material';
+import { useActionState, useRef, useEffect } from 'react';
+import { submitPrompt, type ChatState } from './actions';
+import { type UploadFile } from './useBase64Image'; // Import the type
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Paper,
+  CircularProgress,
+} from '@mui/material';
 
-interface Message {
-  role: 'user' | 'model' | 'info';
-  parts: { text: string }[];
+interface ChatProps {
+  file: UploadFile;
+  onClear: () => void;
 }
 
-export const Chat = ({ file }: { file: any }) => {
-  const [messages, setMessages] = useState<Message[]>([
+export function Chat({ file, onClear }: ChatProps) {
+  const [state, formAction, isPending] = useActionState<ChatState, FormData>(
+    submitPrompt,
     {
-      role: 'info',
-      parts: [{ text: '✅ Image uploaded. You can start asking questions!' }],
+      updatedHistory: [],
+      success: false,
     },
-  ]);
-  const [input, setInput] = useState('');
-  const [loading, setLoading] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  );
+
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
-
-  const handleSend = async () => {
-    if (!input.trim()) return;
-
-    const userMsg: Message = {
-      role: 'user',
-      parts: [{ text: input }],
-    };
-
-    setMessages((prev) => [...prev, userMsg]);
-    setInput('');
-    setLoading(true);
-
-    const serverHistory = messages.filter(
-      (m) => m.role === 'user' || m.role === 'model'
-    );
-
-    try {
-      const res = await fetch('/api/file-chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: input,
-          file,
-          history: [
-            {
-              role: 'user',
-              parts: [
-                {
-                  inlineData: {
-                    mimeType: file.type,
-                    data: file.base64,
-                  },
-                },
-              ],
-            },
-            ...serverHistory,
-          ],
-        }),
-      });
-
-      const data = await res.json();
-
-      setMessages((prev) => [
-        ...prev,
-        { role: 'model', parts: [{ text: data.text }] },
-      ]);
-    } catch (err) {
-      alert('Something went wrong.');
-    } finally {
-      setLoading(false);
-    }
-  };
+    if (state.success) formRef.current?.reset();
+  }, [state.success]);
 
   return (
-    <Box>
-      {file.imageUrl && (
-        <Box mb={2} display="flex" justifyContent="center">
-          <img src={file.imageUrl} alt="Preview" style={{ maxWidth: '100%' }} />
-        </Box>
-      )}
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Paper
+        variant="outlined"
+        sx={{ p: 2, height: 450, overflowY: 'auto', mb: 2 }}>
+        {/* IMAGE PREVIEW WITH CLEAR BUTTON */}
+        {file.imageUrl && (
+          <Box
+            mb={2}
+            sx={{ position: 'relative', width: 'fit-content', mx: 'auto' }}>
+            <img
+              src={file.imageUrl}
+              alt="Preview"
+              style={{
+                maxWidth: '100%',
+                maxHeight: '250px',
+              }}
+            />
+            <Button
+              size="small"
+              variant="contained"
+              color="error"
+              onClick={onClear}
+              sx={{
+                position: 'absolute',
+                top: 8,
+                right: 8,
+                textTransform: 'none',
+                boxShadow: 3,
+              }}>
+              Clear Image
+            </Button>
+          </Box>
+        )}
 
-      <Paper sx={{ height: 200, overflowY: 'auto', p: 2, mb: 2 }}>
-        {messages.map((msg, i) => (
-          <div key={i}>
-            <strong>{msg.role === 'user' ? 'You:' : 'Gemini:'}</strong>{' '}
-            {msg.parts[0].text}
-          </div>
+        {(state.updatedHistory ?? []).map((msg: any, idx: number) => (
+          <Box
+            key={idx}
+            sx={{ textAlign: msg.role === 'user' ? 'right' : 'left', mb: 2 }}>
+            <Typography variant="caption" color="textSecondary">
+              {msg.role === 'user' ? 'You' : 'Gemini'}
+            </Typography>
+            <Typography
+              sx={{
+                bgcolor: msg.role === 'user' ? '#e3f2fd' : '#f5f5f5',
+                p: 1,
+                borderRadius: 1,
+              }}>
+              {msg.parts[0].text}
+            </Typography>
+          </Box>
         ))}
-
-        {loading && <CircularProgress size={20} />}
-        <div ref={messagesEndRef} />
+        {isPending && <CircularProgress size={20} sx={{ mt: 1 }} />}
       </Paper>
 
-      <Box display="flex" gap={1}>
-        <TextField
-          fullWidth
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+      <form action={formAction} ref={formRef}>
+        <input
+          type="hidden"
+          name="history"
+          value={JSON.stringify(state.updatedHistory ?? [])}
         />
-        <Button onClick={handleSend} disabled={loading}>
-          Send
-        </Button>
-      </Box>
+
+        {/* If state.success is true, we don't need to send the base64 string again! */}
+        {!state.success && (
+          <input
+            type="hidden"
+            name="image"
+            value={JSON.stringify({ mimeType: file.mimeType, data: file.data })}
+          />
+        )}
+
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <TextField
+            fullWidth
+            name="message"
+            placeholder="Ask about the image..."
+            disabled={isPending}
+          />
+          <Button type="submit" variant="contained" disabled={isPending}>
+            Send
+          </Button>
+        </Box>
+      </form>
     </Box>
   );
-};
+}

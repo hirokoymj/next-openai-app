@@ -12,6 +12,7 @@ import {
   Typography,
   Box,
   CircularProgress,
+  Stack,
 } from '@mui/material';
 import { AiModelHeader } from '@/components/AiModelHeader';
 
@@ -20,18 +21,15 @@ export default function RecipePage() {
     submitRecipe,
     null,
   );
+  const [formKey, setFormKey] = useState(0);
   const [fieldError, setFieldError] = useState<string | null>(null);
 
   const handleBlur = (
     e: FocusEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    const value = e.target.value.trim();
-
-    if (value === '') {
-      setFieldError('Recipe name is required');
-    } else {
-      setFieldError(null);
-    }
+    setFieldError(
+      e.target.value.trim() === '' ? 'Recipe name is required' : null,
+    );
   };
 
   const handleChange = () => {
@@ -39,7 +37,7 @@ export default function RecipePage() {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <Container maxWidth="lg">
       <Grid container spacing={3}>
         <RecipePageHeader />
         {/* INPUT SECTION */}
@@ -54,33 +52,37 @@ export default function RecipePage() {
               padding: 2,
               minHeight: '200px',
             }}>
-            <form action={formAction}>
-              <TextField
-                fullWidth
-                name="recipe"
-                label="Recipe"
-                placeholder="e.g.Chocolate Chip Cookies"
-                variant="outlined"
-                disabled={isPending}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={!!fieldError}
-                helperText={fieldError}
-                sx={{ mb: 2 }}
-              />
-              <Button
-                type="submit"
-                variant="contained"
-                fullWidth
-                disabled={isPending || !!fieldError}
-                startIcon={
-                  isPending ? (
-                    <CircularProgress size={20} color="inherit" />
-                  ) : null
-                }>
-                {isPending ? 'Generating...' : 'Generate Recipe'}
-              </Button>
-            </form>
+            <div key={formKey}>
+              <form action={formAction}>
+                <TextField
+                  fullWidth
+                  name="recipe"
+                  label="Recipe"
+                  placeholder="e.g.Chocolate Chip Cookies"
+                  variant="outlined"
+                  disabled={isPending}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  error={!!fieldError}
+                  helperText={fieldError}
+                  sx={{ mb: 2 }}
+                />
+                <Stack direction="row" spacing={2}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    fullWidth
+                    disabled={isPending || !!fieldError}>
+                    {isPending ? 'Generating...' : 'Generate Recipe'}
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    onClick={() => setFormKey((k) => k + 1)}>
+                    Reset
+                  </Button>{' '}
+                </Stack>
+              </form>
+            </div>
           </Paper>
         </Grid>
 
@@ -99,7 +101,7 @@ export default function RecipePage() {
               padding: 2,
               minHeight: '200px',
             }}>
-            {state?.success === false && (
+            {state?.success === false && state.message && (
               <Alert severity="error" sx={{ mb: 2 }}>
                 {state.message || 'Something went wrong.'}
               </Alert>
@@ -122,9 +124,11 @@ export default function RecipePage() {
                 </Typography>
                 <Box component="ul" sx={{ pl: 2 }}>
                   {state.data.ingredients?.map((item: string, i: number) => (
-                    <Typography component="li" key={i} sx={{ mb: 0.5 }}>
-                      {item}
-                    </Typography>
+                    <li key={i}>
+                      <Typography variant="body1" sx={{ mb: 0.5 }}>
+                        {item}
+                      </Typography>
+                    </li>
                   ))}
                 </Box>
 
@@ -140,12 +144,6 @@ export default function RecipePage() {
                 </Box>
               </>
             )}
-
-            {!isPending && state?.success === false && (
-              <Typography color="text.secondary" align="center" sx={{ mt: 5 }}>
-                Enter a dish name and click generate to see the magic.
-              </Typography>
-            )}
           </Paper>
         </Grid>
       </Grid>
@@ -156,9 +154,9 @@ export default function RecipePage() {
 const headerInfo = {
   title: 'Recipe generator by Gemini',
   provider: 'Google',
-  model: 'Gemini 2.5 Flash-Lite',
+  model: 'Gemini 2.0 Flash-Lite',
   repoUrl:
-    'https://github.com/hirokoymj/next-openai-app/tree/main/src/app/ai/recipe',
+    'https://github.com/hirokoymj/next-openai-app/tree/main/src/app/recipe',
   referenceUrl:
     'https://ai.google.dev/gemini-api/docs/structured-output?example=recipe',
   referenceLabel: 'Structured outputs (JSON)',

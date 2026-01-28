@@ -1,17 +1,17 @@
 'use client';
 import { useState, useCallback } from 'react';
 
-interface uploadFile {
-  type: any;
-  base64: any;
+export interface UploadFile {
+  mimeType: string;
+  data: string;
   imageUrl: string;
 }
 
 export const useBase64Image = () => {
-  const [fileData, setFileData] = useState<null | uploadFile>(null);
+  const [fileData, setFileData] = useState<null | UploadFile>(null);
   const [fileError, setFileError] = useState<null | string>(null);
 
-  const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
+  const MAX_FILE_SIZE_BYTES = 4 * 1024 * 1024; // 4MB
 
   const convertFileToBase64 = (file: any) => {
     return new Promise((resolve, reject) => {
@@ -27,23 +27,30 @@ export const useBase64Image = () => {
     if (!uploadedFile) return;
 
     if (uploadedFile.size > MAX_FILE_SIZE_BYTES) {
-      setFileError('File size exceeds 10MB.');
+      setFileError(
+        `File is too large (${(uploadedFile.size / 1024 / 1024).toFixed(1)}MB). Max limit is 4MB.`,
+      );
       setFileData(null);
       return;
     }
 
     setFileError(null);
 
-    const base64: any = await convertFileToBase64(uploadedFile);
+    const base64String = (await convertFileToBase64(uploadedFile)) as string;
 
     setFileData({
-      type: uploadedFile.type,
-      base64: base64.split(',')[1], //Gemini needs pure Base64 bytes (data:image/jpeg;base64,/9j/4AAQS... -> /9j/4AAQS...)
+      mimeType: uploadedFile.type,
+      data: base64String.split(',')[1], //Gemini needs pure Base64 bytes (data:image/jpeg;base64,/9j/4AAQS... -> /9j/4AAQS...)
       imageUrl: uploadedFile.type.startsWith('image/')
         ? URL.createObjectURL(uploadedFile)
         : '/document-icon.png',
     });
   }, []);
 
-  return { fileData, fileError, handleUpload };
+  const resetFile = useCallback(() => {
+    setFileData(null);
+    setFileError(null);
+  }, []);
+
+  return { fileData, fileError, handleUpload, resetFile };
 };

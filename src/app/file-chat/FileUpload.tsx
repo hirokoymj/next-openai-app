@@ -36,11 +36,11 @@ export const FileUpload = ({ handleUpload, fileError }: FileUploadProps) => {
           },
           transition: 'background-color 0.3s ease',
         }}>
-        Upload Document (PNG, JPG)
+        Upload Document (Max 4MB: PNG, JPG)
         <input
           type="file"
           hidden
-          accept=".pdf, .jpg, .jpeg, .png"
+          accept=".jpg, .jpeg, .png"
           onChange={handleUpload}
         />
       </Button>

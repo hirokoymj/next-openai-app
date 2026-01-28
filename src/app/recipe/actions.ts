@@ -17,21 +17,15 @@ const recipeSchema = z.object({
   steps: z.array(z.string()),
 });
 
+type Recipe = {
+  recipeName: string;
+  ingredients: string[];
+  steps: string[];
+};
+
 export type RecipeState =
-  | {
-      success: true;
-      data: {
-        recipeName: string;
-        ingredients: string[];
-        steps: string[];
-      };
-      message?: string;
-    }
-  | {
-      success: false;
-      message: string;
-      data?: never;
-    }
+  | { success: true; data: Recipe; message?: string }
+  | { success: false; message: string; data?: Recipe }
   | null;
 
 export async function submitRecipe(
