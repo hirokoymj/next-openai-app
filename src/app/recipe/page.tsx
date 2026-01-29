@@ -165,6 +165,7 @@ const headerInfo = {
     'Server Actions',
     'Gemini API (generateContent)',
     'useActionState',
+    'LangSmith',
   ],
 };
 const RecipePageHeader = () => {

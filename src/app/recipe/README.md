@@ -6,11 +6,12 @@
 - **Gemini API (Gemini 2.0 Flash-Lite):** `generateContent`.
 - **Structured Outputs:** Leveraging `responseMimeType: 'application/json'` to ensure consistent data parsing.
 - **Zod:** Defining the AI's response shape via JSON Schema.
+- **LangSmith**: Tracing and observability for AI runs.
 
 **Frontend**
 
 - **React `useActionState` Hook:** Managing form state, pending transitions, and server responses.
-- **Material UI (MUI):**
+- **Material UI (MUI)**: UI components and layout.
 
 ---
 
@@ -26,18 +27,18 @@ app/
 
 ---
 
-### The Input (Payload)
+### Input (Payload)
 
-The application uses a standard `FormData` object submitted via a Next.js Server Action.
+The application uses a `FormData` object submitted via a Next.js Server Action.
 
-- **recipe**: The name of the dish the user wants to generate.
+- **recipe**: The name of the dish to generate.
 
-### The Output (Response State)
+### Output (Response State)
 
 The state is managed by the `useActionState` hook and follows this structure:
 
 - **success** (boolean): Indicates if the recipe was generated successfully.
-- **data** (object): Contains recipeName, ingredients[], and steps[].
+- **data** (object): Contains recipeName, ingredients, and steps.
 - **message** (string): (Optional) Error message or status update.
 
 ```js
@@ -70,7 +71,12 @@ const response = await ai.models.generateContent({
 
 ![](../../../public/screenshots/gemini-recipe.png)
 
+**LangSmith: Personal -> Tracing -> Project**
+
+![](../../../public/screenshots/LangSmith.png)
+
 ### Reference
 
 - [Gemini API Structured Outputs](https://ai.google.dev/gemini-api/docs/structured-output?example=recipe)
 - [Next.js Server Actions Documentation](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations)
+- [@google/genai: generateContent](https://googleapis.github.io/js-genai/release_docs/classes/models.Models.html#generatecontent)

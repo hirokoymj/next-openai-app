@@ -8,12 +8,13 @@
 - **Server Actions**: Leveraging `useActionState` for seamless Client-Server communication.
 - **Gemini API (Gemini 2.5 Flash-Lite)**: Utilizing `chats.create` for session management and `chat.sendMessage` for multi-modal turns.
 - **Zod**: Server-side form validation.
+- **LangSmith**: Tracing and observability for AI runs.
 
 **Frontend**
 
 - **React useActionState**: Manages UI state, loading indicators, and server responses.
 - **Custom Hook (`useBase64Image`)**: Handles client-side file validation (4MB limit), Base64 encoding, and memory management via `URL.revokeObjectURL`.
-- **Material UI (MUI)**: Responsive design and accessible components.
+- **Material UI (MUI)**: UI components with responsive design.
 
 ---
 
@@ -60,6 +61,8 @@ type ChatState = {
 ### Screenshot
 
 ![](../../../public/screenshots/gemini-file-chat.png)
+
+![](../../../public//screenshots/LangSmith.png)
 
 ### References
 

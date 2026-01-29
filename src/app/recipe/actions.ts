@@ -2,13 +2,10 @@
 import { GoogleGenAI } from '@google/genai';
 import { z } from 'zod';
 import { zodToJsonSchema } from 'zod-to-json-schema';
+import { traceable } from 'langsmith/traceable';
 
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY!,
-});
-
-const schema = z.object({
-  recipe: z.string().max(100),
 });
 
 const recipeSchema = z.object({
@@ -17,37 +14,27 @@ const recipeSchema = z.object({
   steps: z.array(z.string()),
 });
 
-type Recipe = {
-  recipeName: string;
-  ingredients: string[];
-  steps: string[];
-};
+type Recipe = z.infer<typeof recipeSchema>;
 
 export type RecipeState =
   | { success: true; data: Recipe; message?: string }
   | { success: false; message: string; data?: Recipe }
   | null;
 
-export async function submitRecipe(
-  prevState: RecipeState,
-  formData: FormData,
-): Promise<RecipeState> {
-  const validatedFields = schema.safeParse({
-    recipe: formData.get('recipe'),
-  });
-
-  if (!validatedFields.success) {
-    return { success: false, message: 'Invalid Input' };
-  }
-
-  try {
-    const recipe = validatedFields.data.recipe;
+const getAiRecipe = traceable(
+  async (recipeTitle: string): Promise<Recipe> => {
     const prompt = `
-Create a detailed cooking recipe for: "${recipe}"
-Return only JSON with:
-- recipeName
-- ingredients (array of strings)
-- steps (array of strings)
+Create a detailed cooking recipe for "${recipeTitle}".
+
+Return ONLY valid JSON in the following format:
+
+{
+  "recipeName": string,
+  "ingredients": string[],
+  "steps": string[]
+}
+
+No markdown. No extra text.
 `;
 
     const response = await ai.models.generateContent({
@@ -59,26 +46,41 @@ Return only JSON with:
       },
     });
 
-    const textOutput = response.text ?? '';
-
-    if (!textOutput) {
-      throw new Error('No content generated');
+    if (!response.text) {
+      throw new Error('Empty model response');
     }
 
-    const parsedData = recipeSchema.parse(JSON.parse(textOutput));
+    return recipeSchema.parse(JSON.parse(response.text));
+  },
+  { name: 'Gemini Recipe Generation', run_type: 'llm' },
+);
+
+// --- The Server Action (Called by useActionState) ---
+export async function submitRecipe(
+  prevState: RecipeState,
+  formData: FormData,
+): Promise<RecipeState> {
+  const recipeTitle = formData.get('recipe') as string;
+
+  if (!recipeTitle || recipeTitle.length > 100) {
+    return {
+      success: false,
+      message: 'Please provide a valid recipe name (max 100 chars).',
+    };
+  }
+
+  try {
+    const data = await getAiRecipe(recipeTitle);
+
     return {
       success: true,
-      data: {
-        recipeName: parsedData.recipeName,
-        ingredients: parsedData.ingredients,
-        steps: parsedData.steps,
-      },
+      data: data,
     };
   } catch (error) {
     console.error('Recipe Generation Error:', error);
     return {
       success: false,
-      message: 'Failed to generate a recipe. Please try again later.',
+      message: 'Failed to generate a recipe. Check LangSmith for details.',
     };
   }
 }

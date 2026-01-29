@@ -43,6 +43,7 @@ const FileChatPageHeader = () => {
     stack: [
       'Backend: Next.js, Server Actions, Gemini API(chat.create)',
       'Frontend: useActionState, Custom Hook, File upload',
+      'Tracing: LangSmith',
     ],
   };
   return <AiModelHeader headerInfo={headerInfo} />;
