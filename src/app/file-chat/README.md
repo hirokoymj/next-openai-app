@@ -70,6 +70,3 @@ type ChatState = {
 - [@google/genai: sendMessage](https://googleapis.github.io/js-genai/release_docs/classes/chats.Chat.html#sendmessage)
 - [@google/genai: Chat Creation](https://googleapis.github.io/js-genai/release_docs/classes/chats.Chats.html#create)
 
-<!-- "I used Next.js Server Actions with the useActionState hook. This allows for a unary data flow: the client sends a snapshot of the current state, the server processes it with the Gemini SDK, and returns a new state object that React uses to re-render the chat history automatically." -->
-
-<!-- using Server Actions, you never expose your GEMINI_API_KEY to the browser. The browser only sees the final text response, keeping your credentials and system instructions safely on the server. -->

@@ -16,6 +16,8 @@ const recipeSchema = z.object({
 
 type Recipe = z.infer<typeof recipeSchema>;
 
+const ENV = process.env.VERCEL_ENV === 'production' ? 'prod' : 'dev';
+
 export type RecipeState =
   | { success: true; data: Recipe; message?: string }
   | { success: false; message: string; data?: Recipe }
@@ -45,14 +47,21 @@ No markdown. No extra text.
         responseJsonSchema: zodToJsonSchema(recipeSchema as any),
       },
     });
-
-    if (!response.text) {
-      throw new Error('Empty model response');
+    const textOutput = response.text?.trim();
+    if (!textOutput) {
+      throw new Error('Empty model response from Gemini');
     }
 
-    return recipeSchema.parse(JSON.parse(response.text));
+    return recipeSchema.parse(JSON.parse(textOutput));
   },
-  { name: 'Gemini Recipe Generation', run_type: 'llm' },
+  {
+    name: 'Gemini Recipe Generation',
+    run_type: 'llm',
+    metadata: {
+      env: ENV,
+      app: 'ai-recipe-generator',
+    },
+  },
 );
 
 // --- The Server Action (Called by useActionState) ---
