@@ -23,22 +23,8 @@ export type RecipeState =
   | { success: false; message: string; data?: Recipe }
   | null;
 
-const getAiRecipe = traceable(
-  async (recipeTitle: string): Promise<Recipe> => {
-    const prompt = `
-Create a detailed cooking recipe for "${recipeTitle}".
-
-Return ONLY valid JSON in the following format:
-
-{
-  "recipeName": string,
-  "ingredients": string[],
-  "steps": string[]
-}
-
-No markdown. No extra text.
-`;
-
+const generateRecipeJson = traceable(
+  async (prompt: string): Promise<string> => {
     const response = await ai.models.generateContent({
       model: 'gemini-2.0-flash-lite',
       contents: prompt,
@@ -47,12 +33,13 @@ No markdown. No extra text.
         responseJsonSchema: zodToJsonSchema(recipeSchema as any),
       },
     });
+
     const textOutput = response.text?.trim();
     if (!textOutput) {
       throw new Error('Empty model response from Gemini');
     }
-    const parsed = recipeSchema.parse(JSON.parse(textOutput));
-    return parsed;
+
+    return textOutput;
   },
   {
     name: 'Gemini Recipe Generation',
@@ -61,15 +48,28 @@ No markdown. No extra text.
       env: ENV,
       app: 'ai-recipe-generator',
     },
-    processOutputs: (output) => ({
-      recipeName: output.recipeName,
-      ingredientsCount: output.ingredients.length,
-      stepsCount: output.steps.length,
-    }),
   },
 );
 
+const getAiRecipe = async (recipeTitle: string): Promise<Recipe> => {
+  const prompt = `
+Create a detailed cooking recipe for "${recipeTitle}".
+
+Return ONLY valid JSON in the following format:
+{
+  "recipeName": string,
+  "ingredients": string[],
+  "steps": string[]
+}
+No markdown. No extra text.
+`;
+
+  const rawJson = await generateRecipeJson(prompt);
+  return recipeSchema.parse(JSON.parse(rawJson));
+};
+
 // --- The Server Action (Called by useActionState) ---
+
 export async function submitRecipe(
   prevState: RecipeState,
   formData: FormData,
