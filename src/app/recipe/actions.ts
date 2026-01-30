@@ -51,8 +51,8 @@ No markdown. No extra text.
     if (!textOutput) {
       throw new Error('Empty model response from Gemini');
     }
-
-    return recipeSchema.parse(JSON.parse(textOutput));
+    const parsed = recipeSchema.parse(JSON.parse(textOutput));
+    return parsed;
   },
   {
     name: 'Gemini Recipe Generation',
@@ -61,6 +61,11 @@ No markdown. No extra text.
       env: ENV,
       app: 'ai-recipe-generator',
     },
+    processOutputs: (output) => ({
+      recipeName: output.recipeName,
+      ingredientsCount: output.ingredients.length,
+      stepsCount: output.steps.length,
+    }),
   },
 );
 
