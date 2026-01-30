@@ -3,6 +3,9 @@ import { GoogleGenAI } from '@google/genai';
 import { z } from 'zod';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { traceable } from 'langsmith/traceable';
+import { Client } from 'langsmith'; // Changed from getClient
+
+const lsClient = new Client();
 
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY!,
@@ -86,11 +89,18 @@ export async function submitRecipe(
   try {
     const data = await getAiRecipe(recipeTitle);
 
+    // This is the magic line for Vercel/Serverless:
+    // It forces the background trace buffer to empty before the function closes.
+    await lsClient.flush();
+
     return {
       success: true,
       data: data,
     };
   } catch (error) {
+    // Flush even on error so you can see why it failed in LangSmith
+    await lsClient.flush();
+
     console.error('Recipe Generation Error:', error);
     return {
       success: false,

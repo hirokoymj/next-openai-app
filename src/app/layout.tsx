@@ -13,7 +13,7 @@ export const runtime = 'nodejs';
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className="m-0 font-sans">
+      <body className="m-0 font-sans" suppressHydrationWarning={true}>
         <QueryClientProvider client={queryClient}>
           <Header />
 

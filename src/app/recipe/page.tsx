@@ -15,7 +15,6 @@ import {
   Stack,
 } from '@mui/material';
 import { AiModelHeader } from '@/components/AiModelHeader';
-export const runtime = 'nodejs';
 
 export default function RecipePage() {
   const [state, formAction, isPending] = useActionState<RecipeState, FormData>(
