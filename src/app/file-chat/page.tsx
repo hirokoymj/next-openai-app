@@ -41,7 +41,7 @@ const FileChatPageHeader = () => {
       'https://ai.google.dev/gemini-api/docs/text-generation#multi-turn-conversations',
     referenceLabel: 'Multimodal (text + image)',
     langSmithUrl:
-      'https://github.com/hirokoymj/next-openai-app/tree/file-chat-langsmith/src/app/file-chat#langsmith-multimodalimage--text-evaluation',
+      'https://github.com/hirokoymj/next-openai-app/tree/file-chat-langsmith/src/app/file-chat#langsmith-multimodal-evaluation-workflow',
     stack: [
       'Next.js (App Router)',
       'Server Actions',
