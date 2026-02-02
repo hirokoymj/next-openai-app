@@ -160,7 +160,8 @@ const headerInfo = {
   referenceUrl:
     'https://ai.google.dev/gemini-api/docs/structured-output?example=recipe',
   referenceLabel: 'Structured outputs (JSON)',
-  langSmithUrl: '',
+  langSmithUrl:
+    'https://github.com/hirokoymj/next-openai-app/tree/file-chat-langsmith/src/app/recipe#langsmith',
   stack: [
     'Next.js (App Route)',
     'Server Actions',
