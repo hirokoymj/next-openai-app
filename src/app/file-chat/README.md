@@ -62,11 +62,25 @@ type ChatState = {
 
 ![](../../../public/screenshots/gemini-file-chat.png)
 
-![](../../../public//screenshots/LangSmith.png)
+### LangSmith: Multimodal Evaluation Workflow
+
+1. **Dataset**: Create examples and upload file attachments.
+2. **Playground**: Use {AllAttachments} in the Human prompt.
+3. **Results**: Run experiments to view outputs.
+4. **Commit**: Save the prompt with the tag filechat-prompt:prod.
+5. **Code**: Update your app to pull from the LangChain Hub.
+
+<img src="../../../public/screenshots/langsmith-tracing-multi-compare.png" alt="description" style="border: 2px solid #000; padding: 5px;">
+
+<img src="../../../public/screenshots/langsmith-dataset-multimodal.png" alt="description" style="border: 2px solid #000; padding: 5px;">
 
 ### References
 
 - [Gemini API: Multi-turn conversations](https://ai.google.dev/gemini-api/docs/text-generation#multi-turn-conversations)
 - [@google/genai: sendMessage](https://googleapis.github.io/js-genai/release_docs/classes/chats.Chat.html#sendmessage)
 - [@google/genai: Chat Creation](https://googleapis.github.io/js-genai/release_docs/classes/chats.Chats.html#create)
-
+- [LangSmith YouTube: multimodal](https://www.youtube.com/watch?v=-VOnEpk3uWo&t=7s)
+- [LangSmith: Include multimodal content in a prompt](https://docs.langchain.com/langsmith/multimodal-content#include-multimodal-content-in-a-prompt)
+- [LangSmith: Strucreud output](https://docs.langchain.com/langsmith/create-a-prompt#structured-output)
+- [LangSmith: multimodal content in prompt](https://docs.langchain.com/langsmith/multimodal-content)
+- [LangSmith: Manage prompts programmatically](https://docs.langchain.com/langsmith/manage-prompts-programmatically)

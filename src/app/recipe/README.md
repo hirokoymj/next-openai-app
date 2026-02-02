@@ -71,9 +71,16 @@ const response = await ai.models.generateContent({
 
 ![](../../../public/screenshots/gemini-recipe.png)
 
-**LangSmith: Personal -> Tracing -> Project**
+### LangSmith:
 
-![](../../../public/screenshots/LangSmith.png)
+**How to Version the Prompt from Traces**
+
+1. LangSmith -> Project -> Tracing -> Open a successful Run.
+2. Click **Playground** (this imports the exact prompt and model settings used).
+3. Note on Structured Output: Instead of using the "Output Schema" UI toggle, ensure the JSON requirements are written in the **SYSTEM** message. This ensures the schema persists when saved to the Gallery.
+4. Click Save as... -> `recipe-generator`.
+
+![](../../../public/screenshots/langsmith-tracing-recipe.png)
 
 ### Reference
 

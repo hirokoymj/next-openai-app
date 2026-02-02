@@ -160,12 +160,12 @@ const headerInfo = {
   referenceUrl:
     'https://ai.google.dev/gemini-api/docs/structured-output?example=recipe',
   referenceLabel: 'Structured outputs (JSON)',
+  langSmithUrl: '',
   stack: [
-    'Next.js',
+    'Next.js (App Route)',
     'Server Actions',
     'Gemini API (generateContent)',
-    'useActionState',
-    'LangSmith',
+    'React useActionState',
   ],
 };
 const RecipePageHeader = () => {
