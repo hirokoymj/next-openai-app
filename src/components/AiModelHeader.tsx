@@ -7,6 +7,7 @@ interface AiHeaderInfo {
   referenceLabel?: string;
   stack?: string[];
   flow?: string;
+  langSmithUrl?: string;
 }
 
 export function AiModelHeader({ headerInfo }: { headerInfo: AiHeaderInfo }) {
@@ -19,6 +20,7 @@ export function AiModelHeader({ headerInfo }: { headerInfo: AiHeaderInfo }) {
     referenceLabel,
     stack,
     flow,
+    langSmithUrl,
   } = headerInfo;
 
   return (
@@ -57,12 +59,23 @@ export function AiModelHeader({ headerInfo }: { headerInfo: AiHeaderInfo }) {
             </a>
           </>
         )}
+        {langSmithUrl && (
+          <>
+            <span>|</span>
+            <a
+              href={langSmithUrl}
+              target="_blank"
+              className="text-blue-700 font-medium hover:underline">
+              LangSmith
+            </a>
+          </>
+        )}
 
         {stack && (
           <>
             <span>|</span>
             <span>
-              <b>Stack:</b> {stack.join(', ')}
+              <b>Tech Stack:</b> {stack.join(', ')}
             </span>
           </>
         )}

@@ -39,11 +39,15 @@ const FileChatPageHeader = () => {
       'https://github.com/hirokoymj/next-openai-app/tree/main/src/app/file-chat',
     referenceUrl:
       'https://ai.google.dev/gemini-api/docs/text-generation#multi-turn-conversations',
-    referenceLabel: 'Multimodal: text + image',
+    referenceLabel: 'Multimodal (text + image)',
+    langSmithUrl:
+      'https://github.com/hirokoymj/next-openai-app/tree/file-chat-langsmith/src/app/file-chat#langsmith-multimodalimage--text-evaluation',
     stack: [
-      'Backend: Next.js, Server Actions, Gemini API(chat.create)',
-      'Frontend: useActionState, Custom Hook, File upload',
-      'Tracing: LangSmith',
+      'Next.js (App Router)',
+      'Server Actions',
+      'Gemini API(chat.create)',
+      'React useActionState',
+      'Custom Hook',
     ],
   };
   return <AiModelHeader headerInfo={headerInfo} />;

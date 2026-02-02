@@ -62,23 +62,17 @@ type ChatState = {
 
 ![](../../../public/screenshots/gemini-file-chat.png)
 
-### LangSmith: Multimodal(image + text) Evaluation
+### LangSmith: Multimodal Evaluation Workflow
 
-1. Dataset: Create dataset, Upload Files in Example (Attachements)
-2. Playground: Prompt Settings, Prompts: HUMAN:`{AllAttachements}`
-3. Experiment Results:
-4. Save & Commit the prompt: `filechat-prompt:prod`
-5. Replace the prompt with LangChan hub prompt in the code.
+1. **Dataset**: Create examples and upload file attachments.
+2. **Playground**: Use {AllAttachments} in the Human prompt.
+3. **Results**: Run experiments to view outputs.
+4. **Commit**: Save the prompt with the tag filechat-prompt:prod.
+5. **Code**: Update your app to pull from the LangChain Hub.
 
-![](../../../public/screenshots/langsmith-dataset-multimodal.png)
+<img src="../../../public/screenshots/langsmith-tracing-multi-compare.png" alt="description" style="border: 2px solid #000; padding: 5px;">
 
-<hr />
-
-![](../../../public/screenshots/langsmith-tracing-multimodal.png)
-
-<hr />
-
-![](../../../public/screenshots/langsmith-tracing-compare-multimodal.png)
+<img src="../../../public/screenshots/langsmith-dataset-multimodal.png" alt="description" style="border: 2px solid #000; padding: 5px;">
 
 ### References
 
