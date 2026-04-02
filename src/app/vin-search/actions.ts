@@ -26,17 +26,16 @@ export async function getCarInfo(
     );
 
     if (!response.ok) {
-      return { data: null, error: 'Failed to fetch car data.', vin };
+      return { data: null, error: 'Failed to fetch car data.' };
     }
 
     const data = await response.json();
 
-    return { data, error: null, vin };
+    return { data, error: null };
   } catch {
     return {
       data: null,
       error: 'Something went wrong while fetching VIN data.',
-      vin,
     };
   }
 }
