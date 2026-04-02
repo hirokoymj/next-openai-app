@@ -29,11 +29,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                   title="AI File Chat"
                   provider="gemini"
                 />{' '}
-                <LeftNav
+                {/* <LeftNav
                   href="/filesearch"
                   title="File Search (RAG)"
                   provider="gemini"
-                />
+                /> */}
                 <hr className="my-3 border-gray-300" />
                 <li className="mb-2 text-xs font-semibold text-gray-500 uppercase">
                   OpenAI
@@ -46,9 +46,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 />
                 <hr className="my-3 border-gray-300" />
                 <li className="mb-2 text-xs font-semibold text-gray-500 uppercase">
-                  Demo
+                  Vehicle API
                 </li>
-                <LeftNav href="/users" title="Users (RESTful)" />
+                <LeftNav href="/vin-search" title="Vin Search" />
+                <hr className="my-3 border-gray-300" />
+                <li className="mb-2 text-xs font-semibold text-gray-500 uppercase">
+                  RESTful API
+                </li>
+                <LeftNav href="/users" title="User List" />
                 <LeftNav href="/registration" title="Users (Server Actions)" />
               </ul>
             </nav>
