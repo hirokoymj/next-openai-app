@@ -1,4 +1,4 @@
-# Next.js + Gemini + OpenAI + Server Actions
+# Next.js Fullstack development for AI app
 
 **Live URL:** https://next-openai-app-ruby.vercel.app/
 
@@ -6,8 +6,9 @@
 
 **Frontend**
 
-- React `useActionState`
+- React.js
 - Material UI (MUI)
+- React hooks: `useActionState`
 
 **Backend**
 
@@ -19,24 +20,51 @@
 - Supabase database
 - Vercel (Build and deployment)
 
-<hr />
+---
 
-### References:
+## Deployment by Vercel
 
-**Vercel**
+- **Custom domain**:
+  - Domain Registar: Cheap-Domain Registration.
+  - Added a subdomain in the DNS records - **ai**.hirokoymj.com.
+- **GitHub App**: Enables auto-deployment on push events to the `main` branch.
 
-- [Overview](https://vercel.com/hirokoymjs-projects)
-- [Deployments](https://vercel.com/hirokoymjs-projects/~/deployments)
-- [Environment Variables](https://vercel.com/hirokoymjs-projects/~/settings)
+---
 
-**Database**
+## Github Actions
 
-- [Supabase dashboard](https://supabase.com/dashboard/project/bksfkeopbvvuwwlleasu)
+A GitHub Actions workflow that automatically pings a Supabase database on a regular schedule to prevent it from going inactive due to inactivity.
 
-**Google Cloud**
+```yaml
+curl -X GET "${{ secrets.SUPABASE_URL }}/rest/v1/users?select=id&limit=1" \
+  -H "apikey: ${{ secrets.SUPABASE_KEY }}" \
+  -H "Authorization: Bearer ${{ secrets.SUPABASE_KEY }}"
+```
 
-- [GCP API key restrictions](https://docs.cloud.google.com/docs/authentication/api-keys#api_key_restrictions)
-- Application restrictions and API restrictions.
+**Schedule**
 
-**Next.js**
-https://nextjs.org/docs/app/getting-started/updating-data
+The workflow runs automatically **twice a week**:
+
+| Day    | Time         |
+| ------ | ------------ |
+| Sunday | 12:00 AM UTC |
+| Friday | 12:00 AM UTC |
+
+## Supabase
+
+**Create a policy**
+
+- Supabase Dashboard -> Authentication -> Policies -> [table] -> Create a policy
+- **Policy type**: `SELECT`, **Target roles**: `anon`, **Using expression**: `true`
+- Row Level Security (RLS) enabled
+- This only allows reading (no write, no delete)
+
+---
+
+#### References:
+
+- [Vercel dashboard](https://vercel.com/hirokoymjs-projects)
+- [Supabase dashboard](https://supabase.com/dashboard)
+- [Google Cloud: API key restrictions](https://docs.cloud.google.com/docs/authentication/api-keys#api_key_restrictions)
+- [Next.js](https://nextjs.org/docs/app/getting-started/updating-data)
+- [Medium: How to Keep Supabase Free Tier Projects Active](https://shadhujan.medium.com/how-to-keep-supabase-free-tier-projects-active-d60fd4a17263)
