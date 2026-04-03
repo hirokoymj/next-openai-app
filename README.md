@@ -1,6 +1,6 @@
-# Next.js Fullstack development for AI app
+# Next.js Fullstack development for AI apps
 
-**Live URL:** https://next-openai-app-ruby.vercel.app/
+**Live URL:** [ai.hirokoymj.com](https://ai.hirokoymj.com)
 
 ## Tech Stack
 
@@ -26,8 +26,11 @@
 
 - **Custom domain**:
   - Domain Registar: Cheap-Domain Registration.
-  - Added a subdomain in the DNS records - **ai**.hirokoymj.com.
+  - Added a subdomain in the DNS records - [ai.hirokoymj.com](https://ai.hirokoymj.com)
+  - Updated live URL: `https://[projectID].vercel.app/` -> `ai.hirokoymj.com`.
 - **GitHub App**: Enables auto-deployment on push events to the `main` branch.
+
+"Updated live URL: https://[projectID].vercel.app/ → ://hirokoymj.com."
 
 ---
 
