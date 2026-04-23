@@ -8,7 +8,8 @@
 
 - React.js
 - Material UI (MUI)
-- React hooks: `useActionState`
+- Form submission: React hooks (`useActionState`)
+- Vehicle API
 
 **Backend**
 
@@ -22,7 +23,7 @@
 
 ---
 
-## Deployment by Vercel
+## Deployment on Vercel
 
 - **Custom domain**:
   - Domain Registar: Cheap-Domain Registration.

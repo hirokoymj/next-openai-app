@@ -54,7 +54,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                   RESTful API
                 </li>
                 <LeftNav href="/users" title="User List" />
-                <LeftNav href="/registration" title="Users (Server Actions)" />
+                {/* <LeftNav href="/registration" title="Users (Server Actions)" /> */}
               </ul>
             </nav>
 
