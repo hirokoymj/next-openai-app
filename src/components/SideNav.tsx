@@ -1,0 +1,43 @@
+'use client';
+
+import LeftNav from '@/components/LeftNav';
+
+export default function SideNav() {
+  return (
+    <nav className="w-50 bg-gray-100 p-4">
+      <ul className="list-none p-0">
+        <li className="mb-2 text-xs font-semibold text-gray-500 uppercase">
+          Gemini
+        </li>
+        <LeftNav href="/recipe" title="Recipe" provider="gemini" />
+        <LeftNav href="/file-chat" title="AI File Chat" provider="gemini" />
+        <hr className="my-3 border-gray-300" />
+        <li className="mb-2 text-xs font-semibold text-gray-500 uppercase">
+          OpenAI
+        </li>
+        <LeftNav href="/summary" title="AI Summary" provider="openai" />
+        <LeftNav
+          href="/image_generator"
+          title="AI Image Generator"
+          provider="openai"
+        />
+        <hr className="my-3 border-gray-300" />
+        <li className="mb-2 text-xs font-semibold text-gray-500 uppercase">
+          Vehicle API
+        </li>
+        <LeftNav href="/vin-search" title="Vin Search" />
+        <hr className="my-3 border-gray-300" />
+        <li className="mb-2 text-xs font-semibold text-gray-500 uppercase">
+          RESTful API
+        </li>
+        <LeftNav href="/users" title="User List" />
+        <hr className="my-3 border-gray-300" />
+        <li className="mb-2 text-xs font-semibold text-gray-500 uppercase">
+          Static Page (SSG)
+        </li>
+        <LeftNav href="/claims" title="Claims" />
+        <LeftNav href="/about" title="About" />
+      </ul>
+    </nav>
+  );
+}

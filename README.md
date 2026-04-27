@@ -63,6 +63,29 @@ The workflow runs automatically **twice a week**:
 - Row Level Security (RLS) enabled
 - This only allows reading (no write, no delete)
 
+### Pages Router - SSG (Static Site Generation) with `getStaticProps`
+
+Next.js Pages Router — File-based Routing
+
+- src/pages/claims.tsx /claims
+  src/pages/index.tsx /
+  src/pages/about.tsx /about
+  src/pages/blog/post.tsx /blog/post
+
+Runs at build time on the server
+Returns props that are passed directly to the component
+The browser only receives the pre-rendered HTML — no JS fetch, no loading state
+
+- The right approach is to extract the full nav into a shared component so both app/layout.tsx and pages/\_app.tsx use the same source. Let me read the LeftNav component first.
+
+| Feature                           | SSG (getStaticProps)                | SSR (getServerSideProps)            |
+| --------------------------------- | ----------------------------------- | ----------------------------------- |
+| Runs                              | Once at build time                  | On every request                    |
+| Data                              | Same for all users                  | Can be request-specific             |
+| Performance                       | Fastest (pre-built HTML)            | Slower (server work per request)    |
+| Use case                          | Static content, marketing pages     | User-specific data, real-time data  |
+| Other frameworks that support SSR | Next.js, Nuxt.js, Angular Universal | Next.js, Nuxt.js, Angular Universal |
+
 ---
 
 #### References:
