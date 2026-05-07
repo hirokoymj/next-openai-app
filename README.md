@@ -37,12 +37,15 @@
 
 ## Github Actions
 
-A GitHub Actions workflow that automatically pings a Supabase database on a regular schedule to prevent it from going inactive due to inactivity.
+Pings Supabase on a schedule (Sunday and Friday) to prevent the free-tier project from going inactive.
 
-```yaml
-curl -X GET "${{ secrets.SUPABASE_URL }}/rest/v1/users?select=id&limit=1" \
-  -H "apikey: ${{ secrets.SUPABASE_KEY }}" \
-  -H "Authorization: Bearer ${{ secrets.SUPABASE_KEY }}"
+**Test locally**
+
+```bash
+source .env
+curl -X GET "$SUPABASE_URL/rest/v1/users?select=id&limit=1" \
+  -H "apikey: $SUPABASE_KEY" \
+  -H "Authorization: Bearer $SUPABASE_KEY"
 ```
 
 **Schedule**
