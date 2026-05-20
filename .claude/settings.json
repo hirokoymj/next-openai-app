@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /Users/hiroko/Documents/LocalDocuments/works2026 -name \"*.py\" | head -20)",
+      "Read(//Users/hiroko/Documents/LocalDocuments/works2026/**)"
+    ]
+  }
+}
