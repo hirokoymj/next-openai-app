@@ -1,13 +1,16 @@
-// app/api/chat/route.ts
 import { openai } from '@ai-sdk/openai';
-import { streamText, embed } from 'ai';
+import { streamText, embed, convertToModelMessages } from 'ai';
 import { Pinecone } from '@pinecone-database/pinecone';
 
-const pinecone = new Pinecone({ apiKey: process.env.PINECONE_API_KEY! });
-
 export async function POST(req: Request) {
+  const pinecone = new Pinecone({ apiKey: process.env.PINECONE_API_KEY! });
   const { messages } = await req.json();
-  const question = messages[messages.length - 1].content;
+
+  // Extract the user's latest question from UIMessage parts
+  const lastMessage = messages[messages.length - 1];
+  const question =
+    lastMessage.parts?.find((p: { type: string }) => p.type === 'text')?.text ??
+    '';
 
   // 1. Embed the user's question
   const { embedding } = await embed({
@@ -25,7 +28,7 @@ export async function POST(req: Request) {
 
   // 3. Build context string from matches
   const context = results.matches
-    .map(match => match.metadata?.text)
+    .map((match) => match.metadata?.text)
     .join('\n\n');
 
   // 4. Stream GPT-4o-mini response using the context
@@ -36,8 +39,8 @@ Answer only based on the context below. If the answer is not in the context, say
 
 Context:
 ${context}`,
-    messages,
+    messages: await convertToModelMessages(messages),
   });
 
-  return result.toDataStreamResponse();
+  return result.toTextStreamResponse();
 }
