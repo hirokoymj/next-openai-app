@@ -2,15 +2,15 @@ import { openai } from '@ai-sdk/openai';
 import { streamText, embed, convertToModelMessages } from 'ai';
 import { Pinecone } from '@pinecone-database/pinecone';
 
-const pinecone = new Pinecone({ apiKey: process.env.PINECONE_API_KEY! });
-
 export async function POST(req: Request) {
+  const pinecone = new Pinecone({ apiKey: process.env.PINECONE_API_KEY! });
   const { messages } = await req.json();
 
   // Extract the user's latest question from UIMessage parts
   const lastMessage = messages[messages.length - 1];
   const question =
-    lastMessage.parts?.find((p: { type: string }) => p.type === 'text')?.text ?? '';
+    lastMessage.parts?.find((p: { type: string }) => p.type === 'text')?.text ??
+    '';
 
   // 1. Embed the user's question
   const { embedding } = await embed({
