@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(find /Users/hiroko/Documents/LocalDocuments/works2026 -name \"*.py\" | head -20)",
-      "Read(//Users/hiroko/Documents/LocalDocuments/works2026/**)"
+      "Read(//Users/hiroko/Documents/LocalDocuments/works2026/**)",
+      "Bash(npx tsc *)",
+      "Bash(npm install *)",
+      "Bash(npm uninstall *)"
     ]
   }
 }
