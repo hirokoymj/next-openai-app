@@ -5,7 +5,8 @@
       "Read(//Users/hiroko/Documents/LocalDocuments/works2026/**)",
       "Bash(npx tsc *)",
       "Bash(npm install *)",
-      "Bash(npm uninstall *)"
+      "Bash(npm uninstall *)",
+      "Bash(node -e \"const l=require\\('./package-lock.json'\\); console.log\\('react:', l.packages['node_modules/react'].version\\); console.log\\('react-dom:', l.packages['node_modules/react-dom'].version\\);\")"
     ]
   }
 }
