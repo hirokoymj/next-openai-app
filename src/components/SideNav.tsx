@@ -6,17 +6,15 @@ export default function SideNav() {
   return (
     <nav className="w-50 bg-gray-100 p-4">
       <ul className="list-none p-0">
-        {/* <li className="mb-2 text-xs font-semibold text-gray-500 uppercase">
-          Gemini
-        </li>
-        <LeftNav href="/recipe" title="Recipe" provider="gemini" />
-        <LeftNav href="/file-chat" title="AI File Chat" provider="gemini" /> */}
-        <hr className="my-3 border-gray-300" />
         <li className="mb-2 text-xs font-semibold text-gray-500 uppercase">
           OpenAI
         </li>
         <LeftNav href="/rag-chat" title="AI - Rag search" provider="openai" />
-
+        <LeftNav
+          href="/pdf-chat"
+          title="AI - Chat with PDF"
+          provider="openai"
+        />
         <LeftNav href="/summary" title="AI Summary" provider="openai" />
         <hr className="my-3 border-gray-300" />
         <li className="mb-2 text-xs font-semibold text-gray-500 uppercase">
